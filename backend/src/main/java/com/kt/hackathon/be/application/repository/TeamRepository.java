@@ -1,12 +1,13 @@
 package com.kt.hackathon.be.application.repository;
 
-import com.kt.hackathon.be.application.model.Team;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import com.kt.hackathon.be.application.model.Team;
 
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Long> {
-    Optional<Team> findByTeamName(String teamName);
-} 
+  Optional<Team> findByTeamName(String teamName);
+}

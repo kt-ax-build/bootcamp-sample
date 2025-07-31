@@ -40,6 +40,17 @@ libs/
 *.war
 *.ear
 
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Newman test reports
+newman/
+api-tests/newman-reports/
+
 # 환경설정(로컬)
 *.env
 .env.*

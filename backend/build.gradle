@@ -2,6 +2,8 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.0'
     id 'io.spring.dependency-management' version '1.1.4'
+    id 'jacoco'
+    id 'com.diffplug.spotless' version '6.25.0'
 }
 
 group = 'com.kt.hackathon'
@@ -34,4 +36,86 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+// Jacoco 설정 - Service 계층만 커버리지 측정
+jacocoTestReport {
+    reports {
+        xml.required = false
+        csv.required = false
+        html.required = true
+    }
+    
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                '**/controller/**',
+                '**/repository/**',
+                '**/model/**',
+                '**/dto/**',
+                '**/config/**',
+                '**/HackathonBackendApplication.class'
+            ])
+        }))
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.7
+            }
+        }
+    }
+    
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                '**/controller/**',
+                '**/repository/**',
+                '**/model/**',
+                '**/dto/**',
+                '**/config/**',
+                '**/HackathonBackendApplication.class'
+            ])
+        }))
+    }
+}
+
+test {
+    finalizedBy jacocoTestReport
+}
+
+// 개발 시 자동 포맷팅 설정
+bootRun {
+    dependsOn spotlessApply
+}
+
+build {
+    dependsOn spotlessApply
+}
+
+compileJava {
+    dependsOn spotlessApply
+}
+
+// Spotless 설정
+spotless {
+    java {
+        // Google Java Format 사용
+        googleJavaFormat()
+        
+        // 라이센스 헤더 (선택사항)
+        // licenseHeader '/* Copyright (C) $YEAR */'
+        
+        // 임포트 정렬
+        importOrder 'java', 'javax', 'org', 'com.kt.hackathon'
+        
+        // 사용하지 않는 임포트 제거
+        removeUnusedImports()
+        
+        // 라인 끝 문자 통일
+        lineEndings 'UNIX'
+    }
 } 

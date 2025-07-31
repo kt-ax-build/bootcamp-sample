@@ -1,0 +1,30 @@
+{
+  "name": "hackathon-backend",
+  "version": "1.0.0",
+  "description": "AI Agentic Boot Camp Backend API Tests",
+  "scripts": {
+    "test:api": "newman run postman/Hackathon_API.postman_collection.json -e postman/Hackathon_API.postman_environment.json -r cli,html,json",
+    "test:api:cli": "newman run postman/Hackathon_API.postman_collection.json -e postman/Hackathon_API.postman_environment.json -r cli",
+    "test:api:html": "newman run postman/Hackathon_API.postman_collection.json -e postman/Hackathon_API.postman_environment.json -r html",
+    "test:api:json": "newman run postman/Hackathon_API.postman_collection.json -e postman/Hackathon_API.postman_environment.json -r json",
+    "install:newman": "npm install -g newman",
+    "postman:setup": "mkdir -p postman api-tests/newman-reports"
+  },
+  "devDependencies": {
+    "newman": "^6.2.1",
+    "newman-reporter-html": "^1.0.5",
+    "newman-reporter-json": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "keywords": [
+    "api-testing",
+    "newman",
+    "postman",
+    "hackathon"
+  ],
+  "author": "AI Agentic Boot Camp",
+  "license": "MIT"
+}
