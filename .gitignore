@@ -1,3 +1,7 @@
+### Cursor ###
+.cursor
+
+### OS ###
 .DS_Store
 
 ### Github actions secrets and variables
