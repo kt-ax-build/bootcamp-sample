@@ -1,0 +1,52 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+# IDE 설정
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# OS/에디터 임시 파일
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# 로그 및 임시 파일
+*.log
+*.tmp
+
+# 라이브러리/의존성
+libs/
+*.jar
+*.war
+*.ear
+
+# 환경설정(로컬)
+*.env
+.env.*
+
+# gradle 환경설정(로컬)
+gradle.properties
+
+# 기타
+out/ 
+
+### Github actions secrets and variables
+.ghsecrets
+.ghvars

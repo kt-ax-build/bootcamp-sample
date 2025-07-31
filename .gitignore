@@ -1,1 +1,5 @@
-backup/AI 해커톤 웹사이트/.DS_Store
+.DS_Store
+
+### Github actions secrets and variables
+.ghsecrets
+.ghvars
