@@ -2,158 +2,358 @@
 
 ## 📋 프로젝트 정보
 - **프로젝트명**: AI Agentic Boot Camp 해커톤 신청 사이트
-- **테스트 환경**: React + TypeScript + Vite
+- **테스트 환경**: React 19 + TypeScript + Vite + Material-UI
 - **테스트 도구**: Jest (단위), Cypress (E2E)
-
+- **상태관리**: Zustand (HackathonStore)
+- **HTTP 클라이언트**: Axios
 
 ---
 
 ## 🧪 TC-UNIT (단위 테스트 시나리오)
 
-### TC-UNIT-001: App 컴포넌트 렌더링 테스트
-- **목적**: App 컴포넌트가 모든 주요 섹션을 올바르게 렌더링하는지 확인
-- **검증 항목**: Navigation, IntroSection, ParticipationSection, RegistrationSection, ConfirmationSection 렌더링
+### TC-UNIT-001: HackathonService.createApplication 테스트
+- **목적**: 신청서 생성 API 호출 기능 검증
+- **검증 항목**: 
+  - 올바른 데이터로 API 호출 성공
+  - 응답 데이터 형식 검증
+  - 에러 처리 검증
 - **도구**: Jest + React Testing Library
 
-### TC-UNIT-002: Navigation 컴포넌트 네비게이션 기능 테스트
-- **목적**: 네비게이션 링크 클릭 시 해당 섹션으로 스크롤되는지 확인
-- **검증 항목**: 로고 클릭, 참가하기 버튼 클릭, 스크롤 위치에 따른 활성 섹션 변경
+### TC-UNIT-002: HackathonService.getApplications 테스트
+- **목적**: 신청서 목록 조회 API 호출 기능 검증
+- **검증 항목**: 
+  - 파라미터 없이 조회 성공
+  - 검색 파라미터로 조회 성공
+  - 400 에러 처리 (잘못된 검색 조건)
+  - 404 에러 처리 (데이터 없음)
+  - 기타 에러 처리
 - **도구**: Jest + React Testing Library
 
-### TC-UNIT-003: RegistrationSection 폼 유효성 검증 테스트
-- **목적**: 폼 입력 시 유효성 검증이 올바르게 동작하는지 확인
-- **검증 항목**: 필수 필드 검증, 이메일 형식 검증, 팀명 중복 확인
+### TC-UNIT-003: HackathonService.getApplication 테스트
+- **목적**: 개별 신청서 조회 API 호출 기능 검증
+- **검증 항목**: 
+  - 올바른 ID로 조회 성공
+  - 응답 데이터 형식 검증
+  - 에러 처리 검증
 - **도구**: Jest + React Testing Library
 
-### TC-UNIT-004: RegistrationSection 팀원 관리 기능 테스트
-- **목적**: 팀원 추가/삭제 기능이 올바르게 동작하는지 확인
-- **검증 항목**: addMember, removeMember 함수 동작, 상태 업데이트
+### TC-UNIT-004: HackathonService.updateApplication 테스트
+- **목적**: 신청서 수정 API 호출 기능 검증
+- **검증 항목**: 
+  - 올바른 데이터로 수정 성공
+  - 응답 데이터 형식 검증
+  - 에러 처리 검증
 - **도구**: Jest + React Testing Library
 
-### TC-UNIT-005: RegistrationSection 폼 제출 테스트
-- **목적**: 폼 제출 시 API 호출과 응답 처리가 올바르게 동작하는지 확인
-- **검증 항목**: HackathonService.createApplication 호출, 성공/실패 메시지 표시
+### TC-UNIT-005: HackathonService.deleteApplication 테스트
+- **목적**: 신청서 삭제 API 호출 기능 검증
+- **검증 항목**: 
+  - 올바른 ID로 삭제 성공
+  - 에러 처리 검증
 - **도구**: Jest + React Testing Library
 
-### TC-UNIT-006: ConfirmationSection 검색 기능 테스트
-- **목적**: 검색 기능이 올바르게 동작하는지 확인
-- **검증 항목**: 검색 조건 입력, API 호출, 결과 표시, 오류 처리
+### TC-UNIT-006: HackathonStore 상태 관리 테스트
+- **목적**: Zustand 스토어 상태 관리 기능 검증
+- **검증 항목**: 
+  - 초기 상태 설정
+  - 로딩 상태 변경
+  - 에러 상태 설정
+  - 애플리케이션 목록 설정
+  - 현재 애플리케이션 설정
 - **도구**: Jest + React Testing Library
 
-### TC-UNIT-007: HackathonService API 메서드 테스트
-- **목적**: 각 API 메서드가 올바른 엔드포인트를 호출하는지 확인
-- **검증 항목**: createApplication, getApplications, getApplication, updateApplication, deleteApplication
-- **도구**: Jest + Mock
+### TC-UNIT-007: HackathonStore API 액션 테스트
+- **목적**: 스토어의 API 액션 기능 검증
+- **검증 항목**: 
+  - createApplication 액션 성공/실패
+  - getApplications 액션 성공/실패
+  - getApplication 액션 성공/실패
+  - updateApplication 액션 성공/실패
+  - deleteApplication 액션 성공/실패
+- **도구**: Jest + React Testing Library
 
-### TC-UNIT-008: HackathonService 오류 처리 테스트
-- **목적**: API 오류 시 적절한 에러 메시지를 반환하는지 확인
-- **검증 항목**: 400, 404, 기타 오류 상황 처리
-- **도구**: Jest + Mock
+### TC-UNIT-008: HackathonStore 팀 관리 테스트
+- **목적**: 팀 멤버 관리 기능 검증
+- **검증 항목**: 
+  - 팀 멤버 추가
+  - 팀 멤버 삭제
+  - 팀 멤버 수정
+  - 팀 정보 업데이트
+- **도구**: Jest + React Testing Library
+
+### TC-UNIT-009: RegistrationSection 컴포넌트 렌더링 테스트
+- **목적**: 신청서 등록 컴포넌트 렌더링 검증
+- **검증 항목**: 
+  - 컴포넌트 정상 렌더링
+  - 폼 필드 존재 확인
+  - 버튼 존재 확인
+  - 초기 상태 검증
+- **도구**: Jest + React Testing Library
+
+### TC-UNIT-010: RegistrationSection 폼 입력 테스트
+- **목적**: 신청서 등록 폼 입력 기능 검증
+- **검증 항목**: 
+  - 팀명 입력 처리
+  - 아이디어 제목 입력 처리
+  - 아이디어 설명 입력 처리
+  - 팀 멤버 정보 입력 처리
+  - 폼 유효성 검증
+- **도구**: Jest + React Testing Library
+
+### TC-UNIT-011: RegistrationSection 팀 멤버 관리 테스트
+- **목적**: 팀 멤버 추가/삭제 기능 검증
+- **검증 항목**: 
+  - 팀 멤버 추가 버튼 동작
+  - 팀 멤버 삭제 버튼 동작
+  - 멤버 정보 입력 처리
+  - 멤버 정보 수정 처리
+- **도구**: Jest + React Testing Library
+
+### TC-UNIT-012: RegistrationSection 폼 제출 테스트
+- **목적**: 신청서 제출 기능 검증
+- **검증 항목**: 
+  - 폼 유효성 검증 성공 시 제출
+  - 폼 유효성 검증 실패 시 에러 표시
+  - 제출 중 로딩 상태 표시
+  - 제출 성공 시 성공 메시지 표시
+  - 제출 실패 시 에러 메시지 표시
+- **도구**: Jest + React Testing Library
+
+### TC-UNIT-013: ConfirmationSection 컴포넌트 렌더링 테스트
+- **목적**: 신청서 확인 컴포넌트 렌더링 검증
+- **검증 항목**: 
+  - 컴포넌트 정상 렌더링
+  - 검색 폼 존재 확인
+  - 검색 버튼 존재 확인
+  - 초기 상태 검증
+- **도구**: Jest + React Testing Library
+
+### TC-UNIT-014: ConfirmationSection 검색 기능 테스트
+- **목적**: 신청서 검색 기능 검증
+- **검증 항목**: 
+  - 팀명으로 검색
+  - 멤버명으로 검색
+  - 검색 결과 표시
+  - 검색 결과 없음 처리
+  - 검색 에러 처리
+- **도구**: Jest + React Testing Library
+
+### TC-UNIT-015: Navigation 컴포넌트 테스트
+- **목적**: 네비게이션 컴포넌트 기능 검증
+- **검증 항목**: 
+  - 네비게이션 메뉴 렌더링
+  - 메뉴 클릭 시 스크롤 동작
+  - 활성 메뉴 하이라이트
+- **도구**: Jest + React Testing Library
+
+### TC-UNIT-016: IntroSection 컴포넌트 테스트
+- **목적**: 소개 섹션 컴포넌트 렌더링 검증
+- **검증 항목**: 
+  - 컴포넌트 정상 렌더링
+  - 콘텐츠 표시 확인
+- **도구**: Jest + React Testing Library
+
+### TC-UNIT-017: ParticipationSection 컴포넌트 테스트
+- **목적**: 참가 안내 섹션 컴포넌트 렌더링 검증
+- **검증 항목**: 
+  - 컴포넌트 정상 렌더링
+  - 참가 안내 콘텐츠 표시 확인
+- **도구**: Jest + React Testing Library
+
+### TC-UNIT-018: Axios 인터셉터 테스트
+- **목적**: Axios 요청/응답 인터셉터 기능 검증
+- **검증 항목**: 
+  - 요청 인터셉터에서 토큰 추가
+  - 응답 인터셉터에서 401 에러 처리
+  - 타임아웃 설정 검증
+- **도구**: Jest
 
 ---
 
 ## 🔄 TC-MODULE (모듈 테스트 시나리오)
 
-### TC-MODULE-001: 신청서 생성 API 모킹 테스트
-- **목적**: 신청서 생성 API 호출 시뮬레이션 및 응답 처리 확인
-- **검증 항목**: POST /api/hackathon/v1/applications 호출, 성공 응답 처리
+### TC-MODULE-001: HackathonService API 모킹 테스트
+- **목적**: API 호출 로직과 에러 처리 검증
+- **검증 항목**: 
+  - createApplication API 호출 성공/실패 시나리오
+  - getApplications API 호출 성공/실패 시나리오
+  - getApplication API 호출 성공/실패 시나리오
+  - updateApplication API 호출 성공/실패 시나리오
+  - deleteApplication API 호출 성공/실패 시나리오
+  - 네트워크 에러 처리
+  - 타임아웃 에러 처리
 - **도구**: Cypress Intercept
 
-### TC-MODULE-002: 신청서 조회 API 모킹 테스트
-- **목적**: 신청서 조회 API 호출 시뮬레이션 및 응답 처리 확인
-- **검증 항목**: GET /api/hackathon/v1/applications 호출, 결과 표시
+### TC-MODULE-002: HackathonStore API 연동 테스트
+- **목적**: 스토어와 API 서비스 연동 검증
+- **검증 항목**: 
+  - API 호출 시 로딩 상태 변경
+  - API 성공 시 상태 업데이트
+  - API 실패 시 에러 상태 설정
+  - 상태 초기화 기능
 - **도구**: Cypress Intercept
 
-### TC-MODULE-003: API 오류 상황 모킹 테스트
-- **목적**: API 오류 상황에서의 UI 동작 확인
-- **검증 항목**: 400, 500 오류 응답 처리, 오류 메시지 표시
+### TC-MODULE-003: RegistrationSection API 연동 테스트
+- **목적**: 신청서 등록 폼과 API 연동 검증
+- **검증 항목**: 
+  - 폼 제출 시 API 호출
+  - API 성공 시 성공 메시지 표시
+  - API 실패 시 에러 메시지 표시
+  - 로딩 상태 표시
 - **도구**: Cypress Intercept
 
-### TC-MODULE-004: HackathonService 성공 시나리오 테스트
-- **목적**: 서비스 계층의 성공적인 API 호출 시 응답 처리 확인
-- **검증 항목**: createApplication, getApplications 성공 시나리오
-- **도구**: Cypress Intercept
-
-### TC-MODULE-005: HackathonService 실패 시나리오 테스트
-- **목적**: 서비스 계층의 실패한 API 호출 시 에러 처리 확인
-- **검증 항목**: createApplication, getApplications 실패 시나리오
+### TC-MODULE-004: ConfirmationSection API 연동 테스트
+- **목적**: 신청서 검색과 API 연동 검증
+- **검증 항목**: 
+  - 검색 시 API 호출
+  - 검색 결과 표시
+  - 검색 결과 없음 처리
+  - 검색 에러 처리
 - **도구**: Cypress Intercept
 
 ---
 
 ## 🎯 TC-E2E (E2E 테스트 시나리오)
 
-### TC-E2E-001: 전체 신청 플로우 테스트
-**Given** 사용자가 해커톤 신청 페이지에 접속한다  
-**When** 사용자가 팀 정보와 아이디어 정보를 입력하고 제출한다  
-**Then** 신청서가 성공적으로 제출되고 성공 메시지가 표시된다
+### TC-E2E-001: 해커톤 신청서 등록 플로우 테스트
+**Given** 사용자가 해커톤 신청 페이지에 접속
+**When** 팀 정보와 아이디어 정보를 입력하고 제출
+**Then** 신청서가 성공적으로 등록되고 성공 메시지가 표시됨
 
-### TC-E2E-002: 신청서 조회 플로우 테스트
-**Given** 사용자가 신청서 조회 페이지에 접속한다  
-**When** 사용자가 팀명을 입력하고 검색한다  
-**Then** 해당 팀의 신청서 정보가 표시된다
+**검증 세부사항**:
+- 네비게이션을 통해 등록 섹션으로 이동
+- 팀명 입력 필드에 유효한 팀명 입력
+- 아이디어 제목 입력 필드에 아이디어 제목 입력
+- 아이디어 설명 입력 필드에 아이디어 설명 입력
+- 팀 멤버 정보 입력 (이름, 이메일, 역할 등)
+- 추가 팀 멤버 추가 기능 사용
+- 폼 제출 버튼 클릭
+- 성공 메시지 확인
+- 로딩 상태 표시 확인
 
-### TC-E2E-003: 팀원 관리 플로우 테스트
-**Given** 사용자가 신청서 작성 페이지에 접속한다  
-**When** 사용자가 팀원 추가 버튼을 클릭하고 새 팀원 정보를 입력한다  
-**Then** 새로운 팀원 카드가 추가되고 정보가 올바르게 저장된다
+### TC-E2E-002: 해커톤 신청서 검색 플로우 테스트
+**Given** 사용자가 신청서 확인 페이지에 접속
+**When** 팀명으로 신청서를 검색
+**Then** 해당 팀의 신청서 정보가 표시됨
 
-### TC-E2E-004: 폼 유효성 검증 플로우 테스트
-**Given** 사용자가 신청서 작성 페이지에 접속한다  
-**When** 사용자가 필수 필드를 비워두고 제출을 시도한다  
-**Then** 유효성 검증 오류 메시지가 표시되고 제출이 차단된다
+**검증 세부사항**:
+- 네비게이션을 통해 확인 섹션으로 이동
+- 검색 폼에 팀명 입력
+- 검색 버튼 클릭
+- 검색 결과 표시 확인
+- 신청서 상세 정보 확인 (팀 정보, 아이디어 정보 등)
 
-### TC-E2E-005: 네비게이션 플로우 테스트
-**Given** 사용자가 메인 페이지에 접속한다  
-**When** 사용자가 네비게이션 메뉴의 각 섹션 링크를 클릭한다  
-**Then** 해당 섹션으로 스크롤되고 활성 상태가 변경된다
+### TC-E2E-003: 해커톤 신청서 멤버명 검색 플로우 테스트
+**Given** 사용자가 신청서 확인 페이지에 접속
+**When** 멤버명으로 신청서를 검색
+**Then** 해당 멤버가 포함된 팀의 신청서 정보가 표시됨
 
-### TC-E2E-006: 오류 처리 플로우 테스트
-**Given** 네트워크 오류나 서버 오류 상황이 발생한다  
-**When** 사용자가 신청서 제출이나 조회를 시도한다  
-**Then** 적절한 오류 메시지가 표시되고 사용자에게 안내가 제공된다
+**검증 세부사항**:
+- 네비게이션을 통해 확인 섹션으로 이동
+- 검색 폼에 멤버명 입력
+- 검색 버튼 클릭
+- 검색 결과 표시 확인
+- 해당 멤버가 포함된 팀 정보 확인
+
+### TC-E2E-004: 해커톤 신청서 검색 결과 없음 테스트
+**Given** 사용자가 신청서 확인 페이지에 접속
+**When** 존재하지 않는 팀명으로 검색
+**Then** 검색 결과 없음 메시지가 표시됨
+
+**검증 세부사항**:
+- 네비게이션을 통해 확인 섹션으로 이동
+- 검색 폼에 존재하지 않는 팀명 입력
+- 검색 버튼 클릭
+- 검색 결과 없음 메시지 확인
+
+### TC-E2E-005: 해커톤 신청서 폼 유효성 검증 테스트
+**Given** 사용자가 해커톤 신청 페이지에 접속
+**When** 필수 필드를 비워두고 제출
+**Then** 유효성 검증 에러 메시지가 표시됨
+
+**검증 세부사항**:
+- 네비게이션을 통해 등록 섹션으로 이동
+- 팀명 필드를 비워둠
+- 아이디어 제목 필드를 비워둠
+- 폼 제출 버튼 클릭
+- 유효성 검증 에러 메시지 확인
+- 필수 필드 하이라이트 확인
+
+### TC-E2E-006: 해커톤 신청서 팀 멤버 관리 테스트
+**Given** 사용자가 해커톤 신청 페이지에 접속
+**When** 팀 멤버를 추가하고 삭제
+**Then** 팀 멤버 목록이 올바르게 업데이트됨
+
+**검증 세부사항**:
+- 네비게이션을 통해 등록 섹션으로 이동
+- 팀 멤버 추가 버튼 클릭
+- 새 멤버 정보 입력 (이름, 이메일, 역할)
+- 추가된 멤버 확인
+- 멤버 삭제 버튼 클릭
+- 삭제된 멤버 확인
+
+### TC-E2E-007: 해커톤 신청서 네비게이션 테스트
+**Given** 사용자가 해커톤 신청 사이트에 접속
+**When** 네비게이션 메뉴를 클릭
+**Then** 해당 섹션으로 스크롤되어 이동됨
+
+**검증 세부사항**:
+- 메인 페이지 로드
+- 소개 메뉴 클릭
+- 소개 섹션으로 스크롤 확인
+- 참가 안내 메뉴 클릭
+- 참가 안내 섹션으로 스크롤 확인
+- 신청서 등록 메뉴 클릭
+- 신청서 등록 섹션으로 스크롤 확인
+- 신청서 확인 메뉴 클릭
+- 신청서 확인 섹션으로 스크롤 확인
+
+### TC-E2E-008: 해커톤 신청서 API 에러 처리 테스트
+**Given** 사용자가 해커톤 신청 페이지에 접속
+**When** 서버 에러가 발생하는 상황에서 폼 제출
+**Then** 적절한 에러 메시지가 표시됨
+
+**검증 세부사항**:
+- 네비게이션을 통해 등록 섹션으로 이동
+- 유효한 폼 데이터 입력
+- 서버 에러 상황 시뮬레이션
+- 폼 제출 버튼 클릭
+- 에러 메시지 표시 확인
+- 에러 상태에서 폼 재시도 가능 확인
 
 ---
 
 ## 📊 테스트 우선순위
 
 ### 높은 우선순위 (핵심 기능)
-- **TC-UNIT-003**: 폼 유효성 검증 (필수)
-- **TC-UNIT-005**: 폼 제출 기능 (필수)
-- **TC-UNIT-006**: 검색 기능 (필수)
-- **TC-MODULE-001**: 신청서 생성 API (필수)
-- **TC-MODULE-002**: 신청서 조회 API (필수)
-- **TC-E2E-001**: 전체 신청 플로우 (필수)
-- **TC-E2E-002**: 신청서 조회 플로우 (필수)
+- TC-UNIT-001 ~ TC-UNIT-005: HackathonService API 호출 테스트
+- TC-UNIT-006 ~ TC-UNIT-008: HackathonStore 상태 관리 테스트
+- TC-UNIT-009 ~ TC-UNIT-012: RegistrationSection 폼 기능 테스트
+- TC-UNIT-013 ~ TC-UNIT-014: ConfirmationSection 검색 기능 테스트
+- TC-MODULE-001 ~ TC-MODULE-004: API 연동 모듈 테스트
+- TC-E2E-001 ~ TC-E2E-002: 핵심 사용자 플로우 테스트
 
 ### 중간 우선순위 (사용자 경험)
-- **TC-UNIT-002**: 네비게이션 기능 (중요)
-- **TC-UNIT-004**: 팀원 관리 기능 (중요)
-- **TC-UNIT-007**: API 메서드 테스트 (중요)
-- **TC-MODULE-003**: API 오류 처리 (중요)
-- **TC-MODULE-004**: 서비스 성공 시나리오 (중요)
-- **TC-E2E-003**: 팀원 관리 플로우 (중요)
-- **TC-E2E-004**: 폼 유효성 검증 플로우 (중요)
-- **TC-E2E-005**: 네비게이션 플로우 (중요)
+- TC-UNIT-015 ~ TC-UNIT-017: UI 컴포넌트 테스트
+- TC-UNIT-018: Axios 인터셉터 테스트
+- TC-E2E-003 ~ TC-E2E-006: 부가 기능 테스트
+- TC-E2E-007: 네비게이션 테스트
 
 ### 낮은 우선순위 (부가 기능)
-- **TC-UNIT-001**: App 컴포넌트 렌더링 (선택)
-- **TC-UNIT-008**: 서비스 오류 처리 (선택)
-- **TC-MODULE-005**: 서비스 실패 시나리오 (선택)
-- **TC-E2E-006**: 오류 처리 플로우 (선택)
+- TC-E2E-008: 에러 처리 테스트
 
 ---
 
 ## 📝 테스트 실행 순서
 
 1. **단위 테스트 실행** (Jest)
-   - TC-UNIT-001 ~ TC-UNIT-008
+   - TC-UNIT-001 ~ TC-UNIT-018
 
 2. **모듈 테스트 실행** (Cypress Intercept)
-   - TC-MODULE-001 ~ TC-MODULE-005
+   - TC-MODULE-001 ~ TC-MODULE-004
 
 3. **E2E 테스트 실행** (Cypress)
-   - TC-E2E-001 ~ TC-E2E-006
+   - TC-E2E-001 ~ TC-E2E-008
 
 ---
 
@@ -162,5 +362,64 @@
 - **단위 테스트**: 모든 TC-UNIT 시나리오 통과
 - **모듈 테스트**: 모든 TC-MODULE 시나리오 통과
 - **E2E 테스트**: 모든 TC-E2E 시나리오 통과
+- **타입 체크**: TypeScript 컴파일 오류 없음
+
+---
+
+## 📈 성공 지표
+
+- **단위 테스트 커버리지**: [목표 없음 - 프론트엔드 제외]
+- **모듈 테스트 통과율**: 100%
+- **E2E 테스트 통과율**: 100%
+- **타입 안정성**: TypeScript 오류 0개
+- **성능 점수**: Lighthouse 90점 이상
+
+---
+
+
+
+## 📋 테스트 데이터
+
+### 테스트용 신청서 데이터
+```typescript
+const mockApplication = {
+  id: 1,
+  team: {
+    id: 1,
+    teamName: "테스트팀",
+    members: [
+      {
+        id: 1,
+        name: "홍길동",
+        email: "hong@test.com",
+        phone: "010-1234-5678",
+        role: "팀장",
+        department: "개발팀",
+        position: "개발자",
+        isLeader: true
+      }
+    ]
+  },
+  ideaTitle: "AI 기반 해커톤 관리 시스템",
+  ideaDescription: "해커톤 참가자들의 아이디어를 효율적으로 관리하는 시스템",
+  problemStatement: "기존 해커톤 관리의 비효율성",
+  solutionApproach: "AI 기술을 활용한 자동화",
+  techStack: "React, TypeScript, Spring Boot, PostgreSQL",
+  status: "PENDING",
+  firstCreateDatetime: "2024-01-01T00:00:00Z",
+  lastUpdateDatetime: "2024-01-01T00:00:00Z"
+};
+```
+
+---
+
+## ⚠️ 주의사항
+
+- 실제 구현되지 않은 기능은 절대 포함하지 않음
+- 전략 문서의 교육 환경 특성을 정확히 반영
+- 접근성, 성능, 반응형 테스트는 제외
+- 인증 관련 기능이 없으므로 제외
+- 커버리지 목표는 백엔드만, 프론트엔드는 제외
+- 테스트 환경 설정 코드는 포함하지 않음
 
  
