@@ -224,8 +224,9 @@ const ConfirmationSection: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 disabled={loading}
+                data-testid="search-input"
               />
-              <SearchButton onClick={handleSearch} disabled={loading}>
+              <SearchButton onClick={handleSearch} disabled={loading} data-testid="search-button">
                 {loading ? '조회 중...' : '조회하기'}
               </SearchButton>
             </SearchForm>
@@ -239,7 +240,7 @@ const ConfirmationSection: React.FC = () => {
             backgroundColor: '#f8fafc',
             border: '1px solid #e2e8f0',
             borderRadius: '12px'
-          }}>
+          }} data-testid="application-result">
             <Typography variant="h5" sx={{ color: '#101828', mb: 3, fontSize: '24px', fontWeight: 600 }}>
               신청 정보
             </Typography>
@@ -349,13 +350,13 @@ const ConfirmationSection: React.FC = () => {
         )}
 
         {error && (
-          <Alert severity="error" sx={{ mt: 2 }}>
+          <Alert severity="error" sx={{ mt: 2 }} data-testid="error-message">
             {error}
           </Alert>
         )}
 
         {successMessage && (
-          <Alert severity="success" sx={{ mt: 2 }}>
+          <Alert severity="success" sx={{ mt: 2 }} data-testid="success-message">
             {successMessage}
           </Alert>
         )}

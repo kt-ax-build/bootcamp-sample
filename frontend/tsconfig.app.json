@@ -22,6 +22,7 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
+    "isolatedModules": true,
 
     /* Types */
     "types": ["jest", "@testing-library/jest-dom"],

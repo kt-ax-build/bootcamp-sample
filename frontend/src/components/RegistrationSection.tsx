@@ -370,6 +370,7 @@ const RegistrationSection: React.FC = () => {
                   placeholder="팀명을 입력하세요"
                   error={!!errors.teamName}
                   helperText={errors.teamName}
+                  data-testid="team-name-input"
                 />
               </FormField>
               <FormField>
@@ -451,6 +452,7 @@ const RegistrationSection: React.FC = () => {
                     placeholder="이름을 입력하세요"
                     error={!!errors.leaderName}
                     helperText={errors.leaderName}
+                    data-testid="leader-name-input"
                   />
                 </FormField>
                 <FormField>
@@ -462,6 +464,7 @@ const RegistrationSection: React.FC = () => {
                     placeholder="부서명을 입력하세요"
                     error={!!errors.leaderDepartment}
                     helperText={errors.leaderDepartment}
+                    data-testid="leader-department-input"
                   />
                 </FormField>
               </FormRow>
@@ -484,6 +487,7 @@ const RegistrationSection: React.FC = () => {
                     placeholder="이메일을 입력하세요"
                     error={!!errors.leaderEmail}
                     helperText={errors.leaderEmail}
+                    data-testid="leader-email-input"
                   />
                 </FormField>
               </FormRow>
@@ -576,6 +580,7 @@ const RegistrationSection: React.FC = () => {
                 placeholder="아이디어의 제목을 입력하세요"
                 error={!!errors.ideaTitle}
                 helperText={errors.ideaTitle}
+                data-testid="idea-title-input"
               />
             </FormField>
             <FormField>
@@ -589,6 +594,7 @@ const RegistrationSection: React.FC = () => {
                 placeholder="어떤 문제를 해결하고 싶으신가요? (300자 이내)"
                 error={!!errors.problemStatement}
                 helperText={errors.problemStatement}
+                data-testid="problem-statement-input"
               />
             </FormField>
             <FormField>
@@ -602,6 +608,7 @@ const RegistrationSection: React.FC = () => {
                 placeholder="어떤 방식으로 해결하실 계획인가요? (500자 이내)"
                 error={!!errors.solutionApproach}
                 helperText={errors.solutionApproach}
+                data-testid="solution-approach-input"
               />
             </FormField>
             <FormField>
@@ -617,7 +624,7 @@ const RegistrationSection: React.FC = () => {
         </FormCard>
 
         <Box display="flex" justifyContent="center">
-          <SubmitButton onClick={handleSubmit} disabled={isSubmitting}>
+          <SubmitButton onClick={handleSubmit} disabled={isSubmitting} data-testid="submit-button">
             {isSubmitting ? '제출 중...' : '참가 신청하기'}
           </SubmitButton>
         </Box>
@@ -628,7 +635,12 @@ const RegistrationSection: React.FC = () => {
           onClose={handleCloseSnackbar}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         >
-          <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          <Alert 
+            onClose={handleCloseSnackbar} 
+            severity={snackbarSeverity} 
+            sx={{ width: '100%' }}
+            data-testid={snackbarSeverity === 'success' ? 'success-message' : 'error-message'}
+          >
             {snackbarMessage}
           </Alert>
         </Snackbar>
