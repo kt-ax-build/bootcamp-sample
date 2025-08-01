@@ -181,7 +181,6 @@
   - updateApplication API 호출 성공/실패 시나리오
   - deleteApplication API 호출 성공/실패 시나리오
   - 네트워크 에러 처리
-  - 타임아웃 에러 처리
 - **도구**: Cypress Intercept
 
 ### TC-MODULE-002: HackathonStore API 연동 테스트
@@ -209,6 +208,7 @@
   - 검색 결과 표시
   - 검색 결과 없음 처리
   - 검색 에러 처리
+  - 이메일로 검색
 - **도구**: Cypress Intercept
 
 ---

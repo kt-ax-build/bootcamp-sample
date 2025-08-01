@@ -31,10 +31,6 @@ export default {
   transformIgnorePatterns: [
     'node_modules/(?!axios/)',
   ],
-  globals: {
-    'ts-jest': {
-      isolatedModules: true,
-    },
-  },
+
   extensionsToTreatAsEsm: ['.ts', '.tsx'],
 }; 

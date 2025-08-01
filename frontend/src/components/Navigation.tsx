@@ -137,12 +137,14 @@ const Navigation: React.FC = () => {
           <NavLink 
             active={activeSection === 'registration'}
             onClick={() => scrollToSection('registration')}
+            data-testid="registration-section"
           >
             신청 및 접수
           </NavLink>
           <NavLink 
             active={activeSection === 'confirmation'}
             onClick={() => scrollToSection('confirmation')}
+            data-testid="confirmation-section"
           >
             신청 확인
           </NavLink>

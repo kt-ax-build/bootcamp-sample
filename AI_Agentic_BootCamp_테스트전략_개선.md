@@ -108,7 +108,7 @@
 
 #### 3.5 프론트엔드 테스트 전략
 - **단위 테스트**: Jest + React Testing Library
-- **모듈 테스트**: Cypress로 서비스 계층 검증
+- **모듈 테스트**: Cypress Intercept로 API 모킹 및 서비스 계층 검증
 - **E2E 테스트**: Cypress로 사용자 시나리오 검증
 
 ## 🔧 테스트 자동화 전략 (교육 환경)
@@ -177,6 +177,12 @@
 #### Module Test (프론트엔드)
 - **대상**: 프론트엔드 서비스 계층 및 API 호출 로직
 - **도구**: Cypress Intercept
+- **테스트 범위**:
+  - HackathonService 메서드 동작 검증
+  - API 호출 성공/실패 시나리오
+  - 응답 데이터 처리 로직
+  - 에러 핸들링 및 상태 관리
+  - 로딩 상태 처리
 - **테스트 범위**:
   - HackathonService 메서드 동작 검증
   - API 호출 성공/실패 시나리오
