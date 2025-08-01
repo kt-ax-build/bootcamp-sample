@@ -6,7 +6,7 @@ spring:
     name: hackathon-backend
   
   datasource:
-    url: jdbc:postgresql://localhost:5432/hackathon_db
+    url: jdbc:postgresql://hackathon-postgres:5432/hackathon_db
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -36,6 +36,6 @@ management:
 
 logging:
   level:
-    com.kt.hackathon: DEBUG
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    com.kt.hackathon: INFO
+    org.hibernate.SQL: INFO
+    # org.hibernate.type.descriptor.sql.BasicBinder: TRACE

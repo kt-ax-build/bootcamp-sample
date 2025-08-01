@@ -17,8 +17,17 @@ const getBaseURL = () => {
   return 'http://localhost:8080';
 };
 
+const baseURL = import.meta.env.VITE_API_BASE_URL || '/api';
+
+declare global {
+  interface ImportMetaEnv {
+    VITE_API_BASE_URL?: string;
+  }
+}
+
 export const axiosInstance = axios.create({
-  baseURL: getBaseURL(),
+  // baseURL: getBaseURL(),
+  baseURL: baseURL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
