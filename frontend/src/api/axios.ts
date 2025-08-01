@@ -1,7 +1,24 @@
 import axios from 'axios';
 
+// 환경 변수 안전하게 처리
+const getBaseURL = () => {
+  // Jest 환경에서는 기본값 사용
+  if (typeof jest !== 'undefined') {
+    return 'http://localhost:8080';
+  }
+  
+  // 브라우저 환경에서는 환경 변수 사용 (Vite에서 자동으로 주입)
+  // @ts-ignore - import.meta는 Vite에서만 사용 가능
+  const viteEnv = (globalThis as any).import?.meta?.env;
+  if (viteEnv?.VITE_API_BASE_URL) {
+    return viteEnv.VITE_API_BASE_URL;
+  }
+  
+  return 'http://localhost:8080';
+};
+
 export const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080',
+  baseURL: getBaseURL(),
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
