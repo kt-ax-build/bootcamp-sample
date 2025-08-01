@@ -52,6 +52,7 @@ export interface CreateApplicationRequest {
   problemStatement?: string;
   solutionApproach?: string;
   techStack?: string;
+  additionalMembers?: TeamMember[];
 }
 
 export interface CreateApplicationResponse extends CommonResponse<HackathonApplication> {}

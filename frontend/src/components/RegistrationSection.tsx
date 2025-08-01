@@ -266,15 +266,32 @@ const RegistrationSection: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      // 팀 리더 정보로 신청서 생성
+      // 모든 팀원 정보를 포함한 신청서 생성
+      const additionalMembers = teamInfo.members.slice(1).map(member => ({
+        name: member.name,
+        email: member.email,
+        phone: member.phone || '',
+        role: member.role || '',
+        department: member.department,
+        position: member.position || '',
+        isLeader: false,
+      }));
+
       const applicationData = {
         teamName: teamInfo.teamName,
         memberName: teamInfo.members[0]?.name || '',
         email: teamInfo.members[0]?.email || '',
         phone: teamInfo.members[0]?.phone || '',
         role: teamInfo.members[0]?.role || '',
+        department: teamInfo.members[0]?.department || '',
+        position: teamInfo.members[0]?.position || '',
+        isLeader: true,
         ideaTitle: ideaInfo.ideaTitle,
         ideaDescription: ideaInfo.ideaDescription,
+        problemStatement: ideaInfo.problemStatement,
+        solutionApproach: ideaInfo.solutionApproach,
+        techStack: ideaInfo.techStack,
+        additionalMembers: additionalMembers,
       };
 
       await HackathonService.createApplication(applicationData);

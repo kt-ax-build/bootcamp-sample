@@ -2,6 +2,7 @@ package com.kt.hackathon.be.application.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,11 +27,12 @@ public class Team {
   @Column(name = "team_name", nullable = false, unique = true)
   private String teamName;
 
-  @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @JsonManagedReference
   private List<TeamMember> members;
 
   @OneToOne(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JsonManagedReference
+  @JsonBackReference
   private HackathonApplication application;
 
   @Column(name = "first_create_datetime")

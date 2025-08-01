@@ -7,3 +7,6 @@
 ### Github actions secrets and variables
 .ghsecrets
 .ghvars
+
+### Gradle ###
+backend/.gradle/

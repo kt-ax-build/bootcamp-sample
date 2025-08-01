@@ -118,6 +118,7 @@ const ConfirmationSection: React.FC = () => {
   const [application, setApplication] = useState<HackathonApplication | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const handleSearch = async () => {
@@ -129,21 +130,36 @@ const ConfirmationSection: React.FC = () => {
 
     setLoading(true);
     setError(null);
+    setSuccessMessage(null);
     setApplication(null);
 
     try {
-      const applications = await HackathonService.getApplications({ teamName: searchQuery.trim() });
+      // 이메일 형식인지 확인 (더 정확한 정규식 사용)
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const isEmail = emailRegex.test(searchQuery.trim());
+      
+      let applications;
+      if (isEmail) {
+        // 이메일로 조회
+        applications = await HackathonService.getApplications({ memberName: searchQuery.trim() });
+      } else {
+        // 팀명으로 조회
+        applications = await HackathonService.getApplications({ teamName: searchQuery.trim() });
+      }
       
       if (applications && applications.length > 0) {
         setApplication(applications[0]);
-        setError('조회되었습니다.');
+        setSuccessMessage('신청 정보를 찾았습니다.');
+        setError(null);
       } else {
         setApplication(null);
         setError('해당 정보를 찾을 수 없습니다.');
+        setSuccessMessage(null);
       }
     } catch (err: any) {
       console.error('Search error:', err);
       setApplication(null);
+      setSuccessMessage(null);
       if (err.response?.status === 400) {
         setError('검색 조건이 올바르지 않습니다.');
       } else if (err.response?.status === 404) {
@@ -236,6 +252,56 @@ const ConfirmationSection: React.FC = () => {
                   {application.team?.teamName}
                 </Typography>
               </Box>
+              
+              {/* 팀원 정보 표시 */}
+              {application.team?.members && application.team.members.length > 0 && (
+                <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
+                  <Typography variant="body1" sx={{ fontWeight: 600, color: '#374151', minWidth: '80px', mt: 0.5 }}>
+                    팀원:
+                  </Typography>
+                  <Box sx={{ flex: 1 }}>
+                    {application.team.members.map((member, index) => (
+                      <Box key={index} sx={{ 
+                        mb: 1, 
+                        p: 2, 
+                        backgroundColor: '#ffffff', 
+                        borderRadius: '8px',
+                        border: '1px solid #e5e7eb'
+                      }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                          <Typography variant="body2" sx={{ fontWeight: 600, color: '#374151' }}>
+                            {member.isLeader ? '팀 리더' : `팀원 ${index + 1}`}:
+                          </Typography>
+                          <Typography variant="body2" sx={{ color: '#101828' }}>
+                            {member.name}
+                          </Typography>
+                        </Box>
+                        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 1 }}>
+                          <Typography variant="body2" sx={{ color: '#6b7280' }}>
+                            이메일: {member.email}
+                          </Typography>
+                          {member.department && (
+                            <Typography variant="body2" sx={{ color: '#6b7280' }}>
+                              부서: {member.department}
+                            </Typography>
+                          )}
+                          {member.position && (
+                            <Typography variant="body2" sx={{ color: '#6b7280' }}>
+                              직책: {member.position}
+                            </Typography>
+                          )}
+                          {member.phone && (
+                            <Typography variant="body2" sx={{ color: '#6b7280' }}>
+                              연락처: {member.phone}
+                            </Typography>
+                          )}
+                        </Box>
+                      </Box>
+                    ))}
+                  </Box>
+                </Box>
+              )}
+              
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Typography variant="body1" sx={{ fontWeight: 600, color: '#374151', minWidth: '80px' }}>
                   아이디어:
@@ -288,6 +354,12 @@ const ConfirmationSection: React.FC = () => {
           </Alert>
         )}
 
+        {successMessage && (
+          <Alert severity="success" sx={{ mt: 2 }}>
+            {successMessage}
+          </Alert>
+        )}
+
         <InfoCard>
           <InfoTitle sx={{ fontSize: '20px', fontWeight: 600, color: '#101828', mb: 2 }}>
             신청 조회 안내
@@ -307,8 +379,8 @@ const ConfirmationSection: React.FC = () => {
         </InfoCard>
       </ContentContainer>
       <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-        <Alert onClose={handleCloseSnackbar} severity="info" sx={{ width: '100%' }}>
-          {error || '조회가 완료되었습니다.'}
+        <Alert onClose={handleCloseSnackbar} severity={error ? "error" : "success"} sx={{ width: '100%' }}>
+          {error || successMessage || '조회가 완료되었습니다.'}
         </Alert>
       </Snackbar>
     </ConfirmationContainer>

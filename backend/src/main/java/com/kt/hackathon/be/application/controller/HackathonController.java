@@ -39,30 +39,48 @@ public class HackathonController {
   public ResponseEntity<List<HackathonApplication>> getApplications(
       @RequestParam(required = false) String teamName,
       @RequestParam(required = false) String memberName) {
-    List<HackathonApplication> applications =
-        hackathonService.getApplications(teamName, memberName);
-    return ResponseEntity.ok(applications);
+    try {
+      List<HackathonApplication> applications =
+          hackathonService.getApplications(teamName, memberName);
+      return ResponseEntity.ok(applications);
+    } catch (Exception e) {
+      System.err.println("Error in getApplications: " + e.getMessage());
+      e.printStackTrace();
+      return ResponseEntity.status(500).build();
+    }
   }
 
   @GetMapping("/applications/{id}")
   @Operation(summary = "해커톤 애플리케이션 상세 조회", description = "특정 해커톤 애플리케이션을 조회합니다.")
   public ResponseEntity<HackathonApplication> getApplication(@PathVariable Long id) {
-    HackathonApplication application = hackathonService.getApplication(id);
-    return ResponseEntity.ok(application);
+    try {
+      HackathonApplication application = hackathonService.getApplication(id);
+      return ResponseEntity.ok(application);
+    } catch (Exception e) {
+      return ResponseEntity.notFound().build();
+    }
   }
 
   @PutMapping("/applications/{id}")
   @Operation(summary = "해커톤 애플리케이션 수정", description = "해커톤 애플리케이션을 수정합니다.")
   public ResponseEntity<HackathonApplication> updateApplication(
       @PathVariable Long id, @RequestBody TeamMemberRequestDto request) {
-    HackathonApplication application = hackathonService.updateApplication(id, request);
-    return ResponseEntity.ok(application);
+    try {
+      HackathonApplication application = hackathonService.updateApplication(id, request);
+      return ResponseEntity.ok(application);
+    } catch (Exception e) {
+      return ResponseEntity.status(500).build();
+    }
   }
 
   @DeleteMapping("/applications/{id}")
   @Operation(summary = "해커톤 애플리케이션 삭제", description = "해커톤 애플리케이션을 삭제합니다.")
   public ResponseEntity<Void> deleteApplication(@PathVariable Long id) {
-    hackathonService.deleteApplication(id);
-    return ResponseEntity.noContent().build();
+    try {
+      hackathonService.deleteApplication(id);
+      return ResponseEntity.noContent().build();
+    } catch (Exception e) {
+      return ResponseEntity.status(500).build();
+    }
   }
 }

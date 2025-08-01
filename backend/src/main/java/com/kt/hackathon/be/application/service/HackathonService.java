@@ -1,5 +1,7 @@
 package com.kt.hackathon.be.application.service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -8,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kt.hackathon.be.application.dto.TeamMemberRequestDto;
 import com.kt.hackathon.be.application.model.HackathonApplication;
 import com.kt.hackathon.be.application.model.Team;
+import com.kt.hackathon.be.application.model.TeamMember;
 import com.kt.hackathon.be.application.repository.HackathonApplicationRepository;
 import com.kt.hackathon.be.application.repository.TeamRepository;
 
@@ -31,15 +34,65 @@ public class HackathonService {
                   Team newTeam =
                       Team.builder()
                           .teamName(request.getTeamName())
-                          .firstCreateDatetime(java.time.LocalDateTime.now().toString())
+                          .firstCreateDatetime(LocalDateTime.now().toString())
                           .firstCreateUid("system")
                           .firstCreateUidIp("127.0.0.1")
-                          .lastUpdateDatetime(java.time.LocalDateTime.now().toString())
+                          .lastUpdateDatetime(LocalDateTime.now().toString())
                           .lastUpdateUid("system")
                           .lastUpdateUidIp("127.0.0.1")
                           .build();
                   return teamRepository.save(newTeam);
                 });
+
+    // 팀원 정보 생성
+    List<TeamMember> members = new ArrayList<>();
+
+    // 팀 리더 정보 추가
+    TeamMember leader =
+        TeamMember.builder()
+            .name(request.getMemberName())
+            .email(request.getEmail())
+            .phone(request.getPhone())
+            .role(request.getRole())
+            .department(request.getDepartment())
+            .position(request.getPosition())
+            .isLeader(true)
+            .team(team)
+            .firstCreateDatetime(LocalDateTime.now().toString())
+            .firstCreateUid("system")
+            .firstCreateUidIp("127.0.0.1")
+            .lastUpdateDatetime(LocalDateTime.now().toString())
+            .lastUpdateUid("system")
+            .lastUpdateUidIp("127.0.0.1")
+            .build();
+    members.add(leader);
+
+    // 추가 팀원 정보 추가
+    if (request.getAdditionalMembers() != null) {
+      for (TeamMemberRequestDto.TeamMemberDto memberDto : request.getAdditionalMembers()) {
+        TeamMember member =
+            TeamMember.builder()
+                .name(memberDto.getName())
+                .email(memberDto.getEmail())
+                .phone(memberDto.getPhone())
+                .role(memberDto.getRole())
+                .department(memberDto.getDepartment())
+                .position(memberDto.getPosition())
+                .isLeader(false)
+                .team(team)
+                .firstCreateDatetime(LocalDateTime.now().toString())
+                .firstCreateUid("system")
+                .firstCreateUidIp("127.0.0.1")
+                .lastUpdateDatetime(LocalDateTime.now().toString())
+                .lastUpdateUid("system")
+                .lastUpdateUidIp("127.0.0.1")
+                .build();
+        members.add(member);
+      }
+    }
+
+    // 팀에 팀원 정보 설정
+    team.setMembers(members);
 
     // 해커톤 애플리케이션 생성
     HackathonApplication application =
@@ -48,10 +101,10 @@ public class HackathonService {
             .ideaTitle(request.getIdeaTitle())
             .ideaDescription(request.getIdeaDescription())
             .status(HackathonApplication.ApplicationStatus.PENDING)
-            .firstCreateDatetime(java.time.LocalDateTime.now().toString())
+            .firstCreateDatetime(LocalDateTime.now().toString())
             .firstCreateUid("system")
             .firstCreateUidIp("127.0.0.1")
-            .lastUpdateDatetime(java.time.LocalDateTime.now().toString())
+            .lastUpdateDatetime(LocalDateTime.now().toString())
             .lastUpdateUid("system")
             .lastUpdateUidIp("127.0.0.1")
             .build();
@@ -62,16 +115,37 @@ public class HackathonService {
   @Transactional(readOnly = true)
   public List<HackathonApplication> getApplications(String teamName, String memberName) {
     try {
+      List<HackathonApplication> applications;
       if (teamName != null && !teamName.trim().isEmpty()) {
-        return applicationRepository.findByTeamTeamName(teamName.trim());
+        applications = applicationRepository.findByTeamTeamName(teamName.trim());
       } else if (memberName != null && !memberName.trim().isEmpty()) {
-        return applicationRepository.findByTeamMembersName(memberName.trim());
+        // 이메일 형식인지 확인
+        if (memberName.contains("@")) {
+          applications = applicationRepository.findByTeamMembersEmail(memberName.trim());
+        } else {
+          applications = applicationRepository.findByTeamMembersName(memberName.trim());
+        }
       } else {
-        return applicationRepository.findAll();
+        applications = applicationRepository.findAll();
       }
+
+      // 팀 정보를 명시적으로 로드
+      for (HackathonApplication application : applications) {
+        if (application.getTeam() != null) {
+          // 팀 정보 로드
+          application.getTeam().getTeamName();
+          // 팀원 정보 로드
+          if (application.getTeam().getMembers() != null) {
+            application.getTeam().getMembers().size();
+          }
+        }
+      }
+
+      return applications;
     } catch (Exception e) {
       // 로그 출력
       System.err.println("Error in getApplications: " + e.getMessage());
+      e.printStackTrace();
       // 빈 리스트 반환
       return List.of();
     }

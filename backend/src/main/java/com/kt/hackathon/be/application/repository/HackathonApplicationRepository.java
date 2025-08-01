@@ -20,6 +20,10 @@ public interface HackathonApplicationRepository extends JpaRepository<HackathonA
   List<HackathonApplication> findByTeamMembersName(@Param("memberName") String memberName);
 
   @Query(
+      "SELECT ha FROM HackathonApplication ha JOIN ha.team t JOIN t.members tm WHERE tm.email = :memberEmail")
+  List<HackathonApplication> findByTeamMembersEmail(@Param("memberEmail") String memberEmail);
+
+  @Query(
       "SELECT ha FROM HackathonApplication ha JOIN ha.team t JOIN t.members tm WHERE t.teamName = :teamName AND tm.name = :memberName")
   List<HackathonApplication> findByTeamTeamNameAndTeamMembersName(
       @Param("teamName") String teamName, @Param("memberName") String memberName);

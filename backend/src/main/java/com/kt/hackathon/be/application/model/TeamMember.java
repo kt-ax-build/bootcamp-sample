@@ -1,5 +1,6 @@
 package com.kt.hackathon.be.application.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,6 +44,7 @@ public class TeamMember {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "team_id")
+  @JsonBackReference
   private Team team;
 
   @Column(name = "first_create_datetime")
