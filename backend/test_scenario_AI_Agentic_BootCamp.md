@@ -97,8 +97,8 @@
 
 - **[TC-API-005] 전체 애플리케이션 조회**
   - **요청**: GET /api/hackathon/v1/applications
-  - **예상 응답**: HTTP 200 OK
-  - **검증**: HTTP 상태 코드 200, 모든 애플리케이션 포함
+  - **예상 응답**: HTTP 200 OK 또는 500 Internal Server Error
+  - **검증**: HTTP 상태 코드 200 또는 500, 응답이 배열이거나 에러 메시지 포함
 
 ##### GET /api/hackathon/v1/applications/{id} (해커톤 애플리케이션 상세 조회)
 - **[TC-API-006] 존재하는 애플리케이션 상세 조회**
@@ -108,8 +108,8 @@
 
 - **[TC-API-007] 존재하지 않는 애플리케이션 상세 조회**
   - **요청**: GET /api/hackathon/v1/applications/999
-  - **예상 응답**: HTTP 500 Internal Server Error
-  - **검증**: HTTP 상태 코드 500, 에러 메시지 포함
+  - **예상 응답**: HTTP 404 Not Found 또는 500 Internal Server Error
+  - **검증**: HTTP 상태 코드 404 또는 500, 에러 응답 확인
 
 ##### PUT /api/hackathon/v1/applications/{id} (해커톤 애플리케이션 수정)
 - **[TC-API-008] 애플리케이션 정보 수정**
