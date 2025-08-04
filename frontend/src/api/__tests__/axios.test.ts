@@ -40,7 +40,7 @@ describe('Axios Configuration', () => {
       const baseURL = (axiosInstance as any).defaults.baseURL;
 
       // Then
-      expect(baseURL).toBe('http://localhost:8080');
+      expect(baseURL).toBe('');
     });
 
     it('요청 인터셉터 존재 확인', () => {

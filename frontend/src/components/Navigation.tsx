@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AppBar, Toolbar, Box, Typography } from '@mui/material';
+import { AppBar, Toolbar, Box, Typography, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const StyledAppBar = styled(AppBar)(() => ({
@@ -10,63 +10,83 @@ const StyledAppBar = styled(AppBar)(() => ({
   left: 0,
   right: 0,
   zIndex: 1000,
+  padding: '0 80px',
+  paddingBottom: '1px',
+  paddingTop: '0px',
+  borderRadius: 0,
 }));
 
 const StyledToolbar = styled(Toolbar)(() => ({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: '0 80px',
+  padding: '0',
   maxWidth: '1920px',
   margin: '0 auto',
   width: '100%',
-  height: '80px',
+  height: '70px',
+  gap: '120px',
+}));
+
+const LogoContainer = styled(Box)(() => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '14px',
 }));
 
 const LogoBox = styled(Box)(() => ({
-  width: '40px',
-  height: '40px',
+  width: '28px',
+  height: '28px',
   backgroundColor: '#9810fa',
-  borderRadius: '8px',
+  borderRadius: '8.75px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   color: '#ffffff',
-  fontSize: '16px',
+  fontSize: '14px',
   fontWeight: 700,
   cursor: 'pointer',
 }));
 
+const BrandText = styled(Typography)(() => ({
+  color: '#ffffff',
+  fontWeight: 700,
+  fontSize: '17.5px',
+  lineHeight: '24.5px',
+}));
+
 const NavLinks = styled(Box)(() => ({
   display: 'flex',
-  gap: '48px',
+  gap: '28px',
   alignItems: 'center',
 }));
 
-const NavLink = styled(Typography, {
+const NavButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'active'
 })<{ active?: boolean }>(({ active }) => ({
-  color: active ? '#9810fa' : '#ffffff',
-  fontSize: '16px',
-  fontWeight: active ? 600 : 500,
-  cursor: 'pointer',
-  transition: 'color 0.2s ease',
+  backgroundColor: active ? '#9810fa' : 'transparent',
+  color: active ? '#ffffff' : '#d1d5dc',
+  fontSize: '14px',
+  fontWeight: 400,
+  padding: '7px 14px',
+  borderRadius: '8.75px',
+  textTransform: 'none',
+  minWidth: 'auto',
   '&:hover': {
-    color: '#9810fa',
+    backgroundColor: active ? '#9810fa' : 'rgba(255, 255, 255, 0.1)',
   },
 }));
 
-const ParticipateButton = styled(Box)(() => ({
-  backgroundColor: '#9810fa',
+const ParticipateText = styled(Typography)(() => ({
   color: '#ffffff',
-  padding: '12px 24px',
-  borderRadius: '8px',
-  fontSize: '16px',
-  fontWeight: 600,
+  fontSize: '12.3px',
+  fontWeight: 400,
   cursor: 'pointer',
-  transition: 'background-color 0.2s ease',
+  transition: 'color 0.2s ease',
+  padding: '1.75px 0 1.25px 0',
+  lineHeight: '1.2',
   '&:hover': {
-    backgroundColor: '#7c0fd8',
+    color: '#ffffff',
   },
 }));
 
@@ -76,7 +96,12 @@ const Navigation: React.FC = () => {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const navHeight = 70;
+      const elementPosition = element.offsetTop - navHeight;
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      });
       setActiveSection(sectionId);
     }
   };
@@ -93,7 +118,7 @@ const Navigation: React.FC = () => {
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['intro', 'participation', 'registration', 'confirmation'];
-      const scrollPosition = window.scrollY + 100; // 네비게이션 높이만큼 오프셋
+      const scrollPosition = window.scrollY + 100;
 
       for (const sectionId of sections) {
         const element = document.getElementById(sectionId);
@@ -114,45 +139,45 @@ const Navigation: React.FC = () => {
   return (
     <StyledAppBar elevation={0}>
       <StyledToolbar>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <LogoBox onClick={handleLogoClick}>KT</LogoBox>
-          <Typography variant="h6" sx={{ color: '#ffffff', fontWeight: 600 }}>
+        <LogoContainer>
+          <LogoBox onClick={handleLogoClick}>AI</LogoBox>
+          <BrandText>
             AI Hackathon
-          </Typography>
-        </Box>
+          </BrandText>
+        </LogoContainer>
 
         <NavLinks>
-          <NavLink 
+          <NavButton 
             active={activeSection === 'intro'}
             onClick={() => scrollToSection('intro')}
           >
             대회 소개
-          </NavLink>
-          <NavLink 
+          </NavButton>
+          <NavButton 
             active={activeSection === 'participation'}
             onClick={() => scrollToSection('participation')}
           >
             참가 안내
-          </NavLink>
-          <NavLink 
+          </NavButton>
+          <NavButton 
             active={activeSection === 'registration'}
             onClick={() => scrollToSection('registration')}
             data-testid="registration-section"
           >
             신청 및 접수
-          </NavLink>
-          <NavLink 
+          </NavButton>
+          <NavButton 
             active={activeSection === 'confirmation'}
             onClick={() => scrollToSection('confirmation')}
             data-testid="confirmation-section"
           >
             신청 확인
-          </NavLink>
+          </NavButton>
         </NavLinks>
 
-        <ParticipateButton onClick={handleParticipateClick}>
+        <ParticipateText onClick={handleParticipateClick}>
           지금 참여하세요 →
-        </ParticipateButton>
+        </ParticipateText>
       </StyledToolbar>
     </StyledAppBar>
   );

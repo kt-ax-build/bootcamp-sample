@@ -22,19 +22,23 @@ describe('HackathonService', () => {
   describe('TC-UNIT-001: createApplication', () => {
     const mockCreateRequest: CreateApplicationRequest = {
       teamName: '테스트팀',
-      memberName: '홍길동',
-      email: 'hong@test.com',
-      phone: '010-1234-5678',
-      role: '팀장',
-      department: '개발팀',
-      position: '개발자',
-      isLeader: true,
+      teamSize: '2',
+      teamDescription: 'AI 개발 전문팀',
       ideaTitle: 'AI 기반 해커톤 관리 시스템',
       ideaDescription: '해커톤 참가자들의 아이디어를 효율적으로 관리하는 시스템',
       problemStatement: '기존 해커톤 관리의 비효율성',
       solutionApproach: 'AI 기술을 활용한 자동화',
       techStack: 'React, TypeScript, Spring Boot, PostgreSQL',
-      additionalMembers: [
+      members: [
+        {
+          name: '홍길동',
+          email: 'hong@test.com',
+          phone: '010-1234-5678',
+          role: '팀장',
+          department: '개발팀',
+          position: '개발자',
+          isLeader: true,
+        },
         {
           name: '김철수',
           email: 'kim@test.com',
@@ -52,6 +56,8 @@ describe('HackathonService', () => {
       team: {
         id: 1,
         teamName: '테스트팀',
+        teamSize: '2',
+        teamDescription: 'AI 개발 전문팀',
         members: [
           {
             id: 1,
@@ -109,8 +115,13 @@ describe('HackathonService', () => {
       expect(result).toHaveProperty('team');
       expect(result).toHaveProperty('ideaTitle');
       expect(result).toHaveProperty('ideaDescription');
+      expect(result).toHaveProperty('problemStatement');
+      expect(result).toHaveProperty('solutionApproach');
+      expect(result).toHaveProperty('techStack');
       expect(result).toHaveProperty('status');
       expect(result.team).toHaveProperty('teamName');
+      expect(result.team).toHaveProperty('teamSize');
+      expect(result.team).toHaveProperty('teamDescription');
       expect(result.team).toHaveProperty('members');
       expect(Array.isArray(result.team.members)).toBe(true);
     });
@@ -132,6 +143,8 @@ describe('HackathonService', () => {
         team: {
           id: 1,
           teamName: '테스트팀1',
+          teamSize: '2',
+          teamDescription: 'AI 개발팀',
           members: [
             {
               id: 1,
@@ -143,6 +156,9 @@ describe('HackathonService', () => {
           ],
         },
         ideaTitle: 'AI 기반 해커톤 관리 시스템',
+        problemStatement: '기존 해커톤 관리의 비효율성',
+        solutionApproach: 'AI 기술을 활용한 자동화',
+        techStack: 'React, TypeScript, Spring Boot',
         status: 'PENDING',
       },
       {
@@ -150,6 +166,8 @@ describe('HackathonService', () => {
         team: {
           id: 2,
           teamName: '테스트팀2',
+          teamSize: '3',
+          teamDescription: '블록체인 개발팀',
           members: [
             {
               id: 2,
@@ -161,6 +179,9 @@ describe('HackathonService', () => {
           ],
         },
         ideaTitle: '블록체인 기반 투표 시스템',
+        problemStatement: '투표 시스템의 투명성 문제',
+        solutionApproach: '블록체인 기술을 활용한 투명한 투표',
+        techStack: 'Ethereum, Solidity, React',
         status: 'APPROVED',
       },
     ];
@@ -239,6 +260,8 @@ describe('HackathonService', () => {
       team: {
         id: 1,
         teamName: '테스트팀',
+        teamSize: '2',
+        teamDescription: 'AI 개발팀',
         members: [
           {
             id: 1,
@@ -251,6 +274,9 @@ describe('HackathonService', () => {
       },
       ideaTitle: 'AI 기반 해커톤 관리 시스템',
       ideaDescription: '해커톤 참가자들의 아이디어를 효율적으로 관리하는 시스템',
+      problemStatement: '기존 해커톤 관리의 비효율성',
+      solutionApproach: 'AI 기술을 활용한 자동화',
+      techStack: 'React, TypeScript, Spring Boot',
       status: 'PENDING',
     };
 
@@ -279,6 +305,9 @@ describe('HackathonService', () => {
       expect(result).toHaveProperty('team');
       expect(result).toHaveProperty('ideaTitle');
       expect(result).toHaveProperty('ideaDescription');
+      expect(result).toHaveProperty('problemStatement');
+      expect(result).toHaveProperty('solutionApproach');
+      expect(result).toHaveProperty('techStack');
       expect(result).toHaveProperty('status');
     });
 
@@ -295,10 +324,21 @@ describe('HackathonService', () => {
   describe('TC-UNIT-004: updateApplication', () => {
     const mockUpdateRequest: CreateApplicationRequest = {
       teamName: '수정된팀',
-      memberName: '홍길동',
-      email: 'hong@test.com',
+      teamSize: '3',
+      teamDescription: '수정된 팀 설명',
       ideaTitle: '수정된 아이디어',
       ideaDescription: '수정된 아이디어 설명',
+      problemStatement: '수정된 문제',
+      solutionApproach: '수정된 해결방법',
+      techStack: '수정된 기술스택',
+      members: [
+        {
+          name: '홍길동',
+          email: 'hong@test.com',
+          role: '팀장',
+          isLeader: true,
+        },
+      ],
     };
 
     const mockUpdatedApplication: HackathonApplication = {
@@ -306,6 +346,8 @@ describe('HackathonService', () => {
       team: {
         id: 1,
         teamName: '수정된팀',
+        teamSize: '3',
+        teamDescription: '수정된 팀 설명',
         members: [
           {
             id: 1,
@@ -318,6 +360,9 @@ describe('HackathonService', () => {
       },
       ideaTitle: '수정된 아이디어',
       ideaDescription: '수정된 아이디어 설명',
+      problemStatement: '수정된 문제',
+      solutionApproach: '수정된 해결방법',
+      techStack: '수정된 기술스택',
       status: 'PENDING',
     };
 
@@ -346,6 +391,9 @@ describe('HackathonService', () => {
       expect(result).toHaveProperty('team');
       expect(result).toHaveProperty('ideaTitle');
       expect(result).toHaveProperty('ideaDescription');
+      expect(result).toHaveProperty('problemStatement');
+      expect(result).toHaveProperty('solutionApproach');
+      expect(result).toHaveProperty('techStack');
       expect(result).toHaveProperty('status');
     });
 

@@ -36,14 +36,44 @@ class HackathonServiceTest {
 
   @BeforeEach
   void setUp() {
+    // 팀원 정보 생성
+    TeamMemberRequestDto.TeamMemberDto leaderDto =
+        TeamMemberRequestDto.TeamMemberDto.builder()
+            .name("홍길동")
+            .email("hong@test.com")
+            .phone("010-1234-5678")
+            .role("팀장")
+            .department("개발팀")
+            .position("개발자")
+            .isLeader(true)
+            .build();
+
+    TeamMemberRequestDto.TeamMemberDto memberDto =
+        TeamMemberRequestDto.TeamMemberDto.builder()
+            .name("김철수")
+            .email("kim@test.com")
+            .phone("010-2345-6789")
+            .role("개발자")
+            .department("개발팀")
+            .position("개발자")
+            .isLeader(false)
+            .build();
+
     requestDto =
         TeamMemberRequestDto.builder()
             .teamName("테스트팀")
+            .teamSize("2")
+            .teamDescription("AI 개발 전문팀")
             .ideaTitle("AI 챗봇")
             .ideaDescription("AI 기반 고객 서비스 챗봇")
+            .problemStatement("고객 문의 응답 지연 문제")
+            .solutionApproach("AI 기술을 활용한 자동 응답 시스템")
+            .techStack("Python, TensorFlow, React")
+            .members(List.of(leaderDto, memberDto))
             .build();
 
-    team = Team.builder().id(1L).teamName("테스트팀").build();
+    team =
+        Team.builder().id(1L).teamName("테스트팀").teamSize("2").teamDescription("AI 개발 전문팀").build();
 
     application =
         HackathonApplication.builder()
@@ -51,6 +81,9 @@ class HackathonServiceTest {
             .team(team)
             .ideaTitle("AI 챗봇")
             .ideaDescription("AI 기반 고객 서비스 챗봇")
+            .problemStatement("고객 문의 응답 지연 문제")
+            .solutionApproach("AI 기술을 활용한 자동 응답 시스템")
+            .techStack("Python, TensorFlow, React")
             .status(HackathonApplication.ApplicationStatus.PENDING)
             .build();
   }
@@ -69,6 +102,9 @@ class HackathonServiceTest {
     assertNotNull(result);
     assertEquals("테스트팀", result.getTeam().getTeamName());
     assertEquals("AI 챗봇", result.getIdeaTitle());
+    assertEquals("고객 문의 응답 지연 문제", result.getProblemStatement());
+    assertEquals("AI 기술을 활용한 자동 응답 시스템", result.getSolutionApproach());
+    assertEquals("Python, TensorFlow, React", result.getTechStack());
     assertEquals(HackathonApplication.ApplicationStatus.PENDING, result.getStatus());
 
     verify(teamRepository).findByTeamName("테스트팀");
@@ -191,7 +227,13 @@ class HackathonServiceTest {
   void updateApplication_아이디어정보수정_성공() {
     // given
     TeamMemberRequestDto updateDto =
-        TeamMemberRequestDto.builder().ideaTitle("수정된 아이디어").ideaDescription("수정된 설명").build();
+        TeamMemberRequestDto.builder()
+            .ideaTitle("수정된 아이디어")
+            .ideaDescription("수정된 설명")
+            .problemStatement("수정된 문제")
+            .solutionApproach("수정된 해결방법")
+            .techStack("수정된 기술스택")
+            .build();
 
     when(applicationRepository.findById(1L)).thenReturn(Optional.of(application));
     when(applicationRepository.save(any(HackathonApplication.class))).thenReturn(application);
@@ -203,6 +245,9 @@ class HackathonServiceTest {
     assertNotNull(result);
     assertEquals("수정된 아이디어", result.getIdeaTitle());
     assertEquals("수정된 설명", result.getIdeaDescription());
+    assertEquals("수정된 문제", result.getProblemStatement());
+    assertEquals("수정된 해결방법", result.getSolutionApproach());
+    assertEquals("수정된 기술스택", result.getTechStack());
 
     verify(applicationRepository).findById(1L);
     verify(applicationRepository).save(any(HackathonApplication.class));
@@ -211,9 +256,15 @@ class HackathonServiceTest {
   @Test
   void updateApplication_팀명변경_성공() {
     // given
-    TeamMemberRequestDto updateDto = TeamMemberRequestDto.builder().teamName("새로운팀명").build();
+    TeamMemberRequestDto updateDto =
+        TeamMemberRequestDto.builder()
+            .teamName("새로운팀명")
+            .teamSize("3")
+            .teamDescription("새로운 팀 설명")
+            .build();
 
-    Team newTeam = Team.builder().id(2L).teamName("새로운팀명").build();
+    Team newTeam =
+        Team.builder().id(2L).teamName("새로운팀명").teamSize("3").teamDescription("새로운 팀 설명").build();
 
     when(applicationRepository.findById(1L)).thenReturn(Optional.of(application));
     when(teamRepository.findByTeamName("새로운팀명")).thenReturn(Optional.empty());

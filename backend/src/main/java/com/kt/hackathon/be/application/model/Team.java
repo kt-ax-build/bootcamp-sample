@@ -27,6 +27,12 @@ public class Team {
   @Column(name = "team_name", nullable = false, unique = true)
   private String teamName;
 
+  @Column(name = "team_size")
+  private String teamSize;
+
+  @Column(name = "team_description", columnDefinition = "TEXT")
+  private String teamDescription;
+
   @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JsonManagedReference
   private List<TeamMember> members;

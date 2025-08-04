@@ -13,7 +13,7 @@ function App() {
       <CssBaseline />
       <div className="App">
         <Navigation />
-        <div style={{ paddingTop: 80 }}>
+        <div style={{ paddingTop: 70 }}>
           <div id="intro">
             <IntroSection />
           </div>

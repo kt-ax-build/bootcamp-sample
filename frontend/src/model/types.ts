@@ -21,6 +21,8 @@ export interface TeamMember {
 export interface Team {
   id?: number;
   teamName: string;
+  teamSize?: string;
+  teamDescription?: string;
   members?: TeamMember[];
 }
 
@@ -40,19 +42,14 @@ export interface HackathonApplication {
 // API request/response types
 export interface CreateApplicationRequest {
   teamName: string;
-  memberName: string;
-  email: string;
-  phone?: string;
-  role?: string;
-  department?: string;
-  position?: string;
-  isLeader?: boolean;
+  teamSize?: string;
+  teamDescription?: string;
   ideaTitle?: string;
   ideaDescription?: string;
   problemStatement?: string;
   solutionApproach?: string;
   techStack?: string;
-  additionalMembers?: TeamMember[];
+  members: TeamMember[];
 }
 
 export interface CreateApplicationResponse extends CommonResponse<HackathonApplication> {}
@@ -76,12 +73,17 @@ export type NavigationItem = 'intro' | 'participation' | 'registration' | 'confi
 // Form types
 export interface TeamFormData {
   teamName: string;
+  teamSize?: string;
+  teamDescription?: string;
   members: TeamMember[];
 }
 
 export interface IdeaFormData {
   ideaTitle: string;
   ideaDescription: string;
+  problemStatement: string;
+  solutionApproach: string;
+  techStack?: string;
 }
 
 export interface ApplicationFormData extends TeamFormData, IdeaFormData {} 

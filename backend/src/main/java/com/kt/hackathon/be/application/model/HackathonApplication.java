@@ -32,6 +32,15 @@ public class HackathonApplication {
   @Column(name = "idea_description", columnDefinition = "TEXT")
   private String ideaDescription;
 
+  @Column(name = "problem_statement", columnDefinition = "TEXT")
+  private String problemStatement;
+
+  @Column(name = "solution_approach", columnDefinition = "TEXT")
+  private String solutionApproach;
+
+  @Column(name = "tech_stack", columnDefinition = "TEXT")
+  private String techStack;
+
   @Enumerated(EnumType.STRING)
   @Column(name = "status")
   private ApplicationStatus status;

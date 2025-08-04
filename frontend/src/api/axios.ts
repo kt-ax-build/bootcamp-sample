@@ -7,17 +7,11 @@ const getBaseURL = () => {
     return 'http://localhost:8080';
   }
   
-  // 브라우저 환경에서는 환경 변수 사용 (Vite에서 자동으로 주입)
-  // @ts-ignore - import.meta는 Vite에서만 사용 가능
-  const viteEnv = (globalThis as any).import?.meta?.env;
-  if (viteEnv?.VITE_API_BASE_URL) {
-    return viteEnv.VITE_API_BASE_URL;
-  }
-  
-  return 'http://localhost:8080';
+  // 개발 환경에서는 프록시 사용
+  return '';
 };
 
-const baseURL = import.meta.env.VITE_API_BASE_URL || '/api';
+const baseURL = getBaseURL();
 
 declare global {
   interface ImportMetaEnv {
@@ -26,7 +20,6 @@ declare global {
 }
 
 export const axiosInstance = axios.create({
-  // baseURL: getBaseURL(),
   baseURL: baseURL,
   timeout: 10000,
   headers: {
