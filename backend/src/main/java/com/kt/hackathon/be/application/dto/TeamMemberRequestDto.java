@@ -16,21 +16,16 @@ import lombok.Setter;
 public class TeamMemberRequestDto {
 
   private String teamName;
-  private String memberName;
-  private String email;
-  private String phone;
-  private String role;
+  private String teamSize;
+  private String teamDescription;
   private String ideaTitle;
   private String ideaDescription;
-  private String department;
-  private String position;
-  private Boolean isLeader;
-
-  // 추가 팀원 정보를 위한 필드들
-  private List<TeamMemberDto> additionalMembers;
   private String problemStatement;
   private String solutionApproach;
   private String techStack;
+
+  // 팀원 정보를 배열로 관리
+  private List<TeamMemberDto> members;
 
   @Getter
   @Setter

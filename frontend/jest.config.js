@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   moduleNameMapper: {
@@ -11,11 +11,10 @@ export default {
   ],
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
-      useESM: true,
       tsconfig: {
         jsx: 'react-jsx',
         esModuleInterop: true,
-        module: 'ESNext',
+        module: 'CommonJS',
         target: 'ES2022',
         allowSyntheticDefaultImports: true,
         skipLibCheck: true,
@@ -31,6 +30,4 @@ export default {
   transformIgnorePatterns: [
     'node_modules/(?!axios/)',
   ],
-
-  extensionsToTreatAsEsm: ['.ts', '.tsx'],
 }; 
