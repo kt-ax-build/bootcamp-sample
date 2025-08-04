@@ -10,3 +10,4 @@
 
 ### Gradle ###
 backend/.gradle/
+backend/build/
