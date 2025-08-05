@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   moduleNameMapper: {
@@ -11,15 +11,7 @@ module.exports = {
   ],
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
-      tsconfig: {
-        jsx: 'react-jsx',
-        esModuleInterop: true,
-        module: 'CommonJS',
-        target: 'ES2022',
-        allowSyntheticDefaultImports: true,
-        skipLibCheck: true,
-        noEmit: true,
-      },
+      tsconfig: 'tsconfig.app.json',
     }],
   },
   testMatch: [

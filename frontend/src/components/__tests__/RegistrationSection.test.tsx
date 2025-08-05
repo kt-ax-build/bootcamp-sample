@@ -80,11 +80,19 @@ describe('RegistrationSection', () => {
       // Given
       render(<RegistrationSection />);
       const user = userEvent.setup();
-      const teamSizeSelect = screen.getByText('팀 구성').closest('div')?.querySelector('input');
+      
+      // Material-UI Select 컴포넌트를 올바르게 찾기
+      const teamSizeSelect = screen.getByText('팀 구성').closest('div')?.querySelector('[role="combobox"]') || 
+                            screen.getByText('팀 구성').closest('div')?.querySelector('input');
 
       // When
       if (teamSizeSelect) {
-        await user.click(teamSizeSelect);
+        // Material-UI Select를 열기 위해 keyDown 이벤트 사용
+        fireEvent.keyDown(teamSizeSelect, { key: 'ArrowDown' });
+        // 옵션이 나타날 때까지 기다림
+        await waitFor(() => {
+          expect(screen.getByText('2명')).toBeInTheDocument();
+        });
         const option = screen.getByText('2명');
         await user.click(option);
       }
