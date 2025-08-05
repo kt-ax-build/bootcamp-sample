@@ -7,6 +7,14 @@ const getBaseURL = () => {
     return 'http://localhost:8080';
   }
   
+  // 환경 변수에서 API 기본 URL 가져오기
+  const apiBaseURL = import.meta.env.VITE_API_BASE_URL;
+  
+  // 환경 변수가 있으면 사용, 없으면 프록시 사용
+  if (apiBaseURL) {
+    return apiBaseURL;
+  }
+  
   // 개발 환경에서는 프록시 사용
   return '';
 };
