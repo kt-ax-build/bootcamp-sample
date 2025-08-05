@@ -12,8 +12,10 @@ export default {
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
       tsconfig: 'tsconfig.app.json',
+      useESM: true,
     }],
   },
+  extensionsToTreatAsEsm: ['.ts', '.tsx'],
   testMatch: [
     '<rootDir>/src/**/__tests__/**/*.{ts,tsx}',
     '<rootDir>/src/**/*.{test,spec}.{ts,tsx}',
@@ -22,4 +24,7 @@ export default {
   transformIgnorePatterns: [
     'node_modules/(?!axios/)',
   ],
+  testEnvironmentOptions: {
+    customExportConditions: ['node', 'node-addons'],
+  },
 }; 

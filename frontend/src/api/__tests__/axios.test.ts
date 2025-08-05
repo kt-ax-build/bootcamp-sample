@@ -1,3 +1,18 @@
+// axios 모듈을 모킹하여 import.meta.env 문제를 우회
+jest.mock('../axios', () => ({
+  axiosInstance: {
+    defaults: {
+      timeout: 10000,
+      headers: { 'Content-Type': 'application/json' },
+      baseURL: 'http://localhost:8080',
+    },
+    interceptors: {
+      request: { handlers: [{}] },
+      response: { handlers: [{}] },
+    },
+  },
+}));
+
 import { axiosInstance } from '../axios';
 
 // localStorage 모킹

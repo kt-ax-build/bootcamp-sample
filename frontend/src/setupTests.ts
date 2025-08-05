@@ -1,5 +1,18 @@
 import '@testing-library/jest-dom';
 
+// import.meta.env 모킹
+Object.defineProperty(globalThis, 'import', {
+  value: {
+    meta: {
+      env: {
+        VITE_API_BASE_URL: 'http://localhost:8080',
+      },
+    },
+  },
+  writable: true,
+  configurable: true,
+});
+
 // jest-dom 타입 확장
 declare global {
   namespace jest {
