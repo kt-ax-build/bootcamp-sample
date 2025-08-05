@@ -103,7 +103,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"teamName\": \"\",\n  \"ideaTitle\": \"\",\n  \"ideaDescription\": \"\"\n}"
+              "raw": "{\n  \"teamName\": \"\",\n  \"ideaTitle\": \"\",\n  \"ideaDescription\": \"\",\n  \"members\": [{\n    \"name\": \"\",\n    \"email\": \"\",\n    \"phone\": \"\",\n    \"role\": \"\",\n    \"department\": \"\",\n    \"position\": \"\",\n    \"isLeader\": false\n  }]\n}"
             },
             "url": {
               "raw": "http://localhost:8080/api/hackathon/v1/applications",

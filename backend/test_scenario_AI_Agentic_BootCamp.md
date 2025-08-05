@@ -80,7 +80,7 @@
   - **검증**: HTTP 상태 코드 200, 응답 데이터에 팀명과 아이디어 정보 포함, status가 PENDING인지 확인
 
 - **[TC-API-002] 필수 정보 누락으로 애플리케이션 생성 실패**
-  - **요청**: POST /api/hackathon/v1/applications
+  - **요청**: POST /api/hackathon/v1/applications (teamName: "", ideaTitle: "", ideaDescription: "", members: [빈 팀원 정보])
   - **예상 응답**: HTTP 500 Internal Server Error
   - **검증**: HTTP 상태 코드 500, 에러 메시지 포함 확인
 
