@@ -19,7 +19,7 @@ const getBaseURL = () => {
   return '';
 };
 
-const baseURL = getBaseURL();
+// const baseURL = getBaseURL();
 
 declare global {
   interface ImportMetaEnv {
@@ -28,7 +28,8 @@ declare global {
 }
 
 export const axiosInstance = axios.create({
-  baseURL: baseURL,
+  // baseURL: baseURL,
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
