@@ -16,8 +16,8 @@
    - Spring Boot 
    - **Build Tool:** Gradle (테스트 및 Lint(`spotlessApply`)는 `gradlew build` 시 자동으로 실행)
 - Database
-   - Postgrsql
-   - **Local DB:** Docker 기반 Postgrsql (`docker-compose up -d`로 실행)
+   - H2 Database (In-Memory)
+   - **Local DB:** H2 인메모리 데이터베이스 (별도 설정 불필요)
 
 ## [Branch 전략]
 - **Branch 전략:** `feature/이슈번호-feature-이슈제목` 형식으로 `develop` 브랜치에서 분기하여 생성합니다.

@@ -17,13 +17,13 @@ AI 해커톤 참가 신청 및 관리 시스템입니다. 팀 정보, 팀원 정
 - **Java 17** - 프로그래밍 언어
 - **Spring Boot 3.2.0** - Java 웹 프레임워크
 - **Spring Data JPA** - 데이터 접근 계층
-- **PostgreSQL** - 관계형 데이터베이스
+- **H2 Database** - 인메모리 관계형 데이터베이스
 - **Gradle** - 빌드 도구
 - **Swagger/OpenAPI** - API 문서화
 
 ### Database
-- **PostgreSQL 15** - Docker 컨테이너로 실행
-- **pgAdmin** - 데이터베이스 관리 도구
+- **H2 Database** - 인메모리 데이터베이스 (별도 설치 불필요)
+- **H2 Console** - 웹 기반 데이터베이스 관리 도구
 
 ## 📁 프로젝트 구조
 
@@ -50,7 +50,7 @@ bootCamp/
 │   │       └── config/            # 설정 클래스
 │   ├── build.gradle
 │   └── ...
-├── docker-compose.yml        # Docker 컨테이너 설정
+
 ├── architecture.md           # 아키텍처 가이드
 └── README.md                # 프로젝트 문서
 ```
@@ -60,16 +60,21 @@ bootCamp/
 ### 사전 요구사항
 - Node.js 18+ (프론트엔드)
 - Java 17+ (백엔드)
-- Docker & Docker Compose (데이터베이스)
+- H2 Database는 Spring Boot에 내장되어 있어 별도 설치 불필요
 
-### 1. 데이터베이스 실행
-```bash
-# PostgreSQL 및 pgAdmin 컨테이너 실행
-docker-compose up -d
+### 1. 데이터베이스 설정
+H2 데이터베이스는 Spring Boot 애플리케이션과 함께 자동으로 시작됩니다. 별도의 설정이 필요하지 않습니다.
 
-# 데이터베이스 상태 확인
-docker ps
-```
+**H2 Console 접속**: `http://localhost:8080/h2-console`
+- JDBC URL: `jdbc:h2:mem:hackathon_db`
+- Username: `sa`
+- Password: (비어있음)
+
+**H2 데이터베이스 특징:**
+- **인메모리 데이터베이스**: 애플리케이션 재시작 시 데이터 초기화
+- **빠른 시작**: 별도 설치나 설정 불필요
+- **개발 환경 최적화**: 테스트 및 개발에 적합
+- **자동 스키마 생성**: JPA 엔티티 기반으로 테이블 자동 생성
 
 ### 2. 백엔드 실행
 ```bash
@@ -198,24 +203,18 @@ cd backend
 - `teamName`: 팀명으로 조회
 - `memberName`: 팀원 이름 또는 이메일로 조회
 
-## 🐳 Docker
+## 🗄️ H2 Database
 
-### 데이터베이스 컨테이너
-```bash
-# 컨테이너 실행
-docker-compose up -d
+### H2 Console 접속
+- URL: `http://localhost:8080/h2-console`
+- JDBC URL: `jdbc:h2:mem:hackathon_db`
+- Username: `sa`
+- Password: (비어있음)
 
-# 컨테이너 중지
-docker-compose down
-
-# 데이터베이스 접속
-docker exec -it hackathon-postgres psql -U postgres -d hackathon_db
-```
-
-### pgAdmin 접속
-- URL: `http://localhost:5050`
-- Email: `admin@hackathon.com`
-- Password: `hackathon123!`
+### 데이터베이스 특징
+- **인메모리 데이터베이스**: 애플리케이션 재시작 시 데이터 초기화
+- **개발 환경 최적화**: 빠른 시작과 테스트에 적합
+- **별도 설치 불필요**: Spring Boot에 내장되어 있음
 
 ## 📋 개발 규칙
 
@@ -237,17 +236,13 @@ docker exec -it hackathon-postgres psql -U postgres -d hackathon_db
 ### 일반적인 문제들
 
 1. **데이터베이스 연결 오류**
-   ```bash
-   # 컨테이너 재시작
-   docker-compose down
-   docker-compose up -d
-   ```
+   - H2 데이터베이스는 Spring Boot와 함께 자동으로 시작됩니다
+   - 애플리케이션 재시작으로 문제 해결 가능
 
 2. **포트 충돌**
    - 백엔드: 8080 포트 확인
    - 프론트엔드: 5173 포트 확인
-   - PostgreSQL: 5432 포트 확인
-   - pgAdmin: 5050 포트 확인
+   - H2 Console: 8080 포트 (백엔드와 동일)
 
 3. **빌드 오류**
    ```bash
