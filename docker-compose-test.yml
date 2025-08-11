@@ -1,24 +1,24 @@
 version: '3.8'
 
 services:
-  be-local:
+  be-test:
     build:
       context: ./backend
       dockerfile: Dockerfile.test
-    container_name: be-local
+    container_name: be-test
     environment:
       - JDK_JAVA_OPTIONS='-Dspring.profiles.active=test'
     ports:
       - "8080:8080"
     restart: unless-stopped
 
-  fe-local:
+  fe-test:
     build:
       context: ./frontend
       dockerfile: Dockerfile.test
-    container_name: fe-local
+    container_name: fe-test
     ports:
       - "5173:8080"
     depends_on:
-      - be-local
+      - be-test
     restart: unless-stopped
