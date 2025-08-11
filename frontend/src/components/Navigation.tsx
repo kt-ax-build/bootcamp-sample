@@ -166,13 +166,6 @@ const Navigation: React.FC = () => {
           >
             신청 및 접수
           </NavButton>
-          <NavButton 
-            active={activeSection === 'confirmation'}
-            onClick={() => scrollToSection('confirmation')}
-            data-testid="confirmation-section"
-          >
-            신청 확인
-          </NavButton>
         </NavLinks>
 
         <ParticipateText onClick={handleParticipateClick}>
