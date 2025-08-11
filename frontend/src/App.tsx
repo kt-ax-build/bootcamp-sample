@@ -4,7 +4,6 @@ import { theme } from './theme';
 import Navigation from './components/Navigation';
 import IntroSection from './components/IntroSection';
 import ParticipationSection from './components/ParticipationSection';
-import RegistrationSection from './components/RegistrationSection';
 
 function App() {
   return (
@@ -18,9 +17,6 @@ function App() {
           </div>
           <div id="participation">
             <ParticipationSection />
-          </div>
-          <div id="registration">
-            <RegistrationSection />
           </div>
         </div>
       </div>

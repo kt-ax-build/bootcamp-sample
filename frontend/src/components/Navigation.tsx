@@ -110,10 +110,6 @@ const Navigation: React.FC = () => {
     scrollToSection('intro');
   };
 
-  const handleParticipateClick = () => {
-    scrollToSection('registration');
-  };
-
   // 스크롤 위치에 따라 활성 섹션 감지
   useEffect(() => {
     const handleScroll = () => {
@@ -159,16 +155,9 @@ const Navigation: React.FC = () => {
           >
             참가 안내
           </NavButton>
-          <NavButton 
-            active={activeSection === 'registration'}
-            onClick={() => scrollToSection('registration')}
-            data-testid="registration-section"
-          >
-            신청 및 접수
-          </NavButton>
         </NavLinks>
 
-        <ParticipateText onClick={handleParticipateClick}>
+        <ParticipateText>
           지금 참여하세요 →
         </ParticipateText>
       </StyledToolbar>
