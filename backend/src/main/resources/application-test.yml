@@ -6,7 +6,7 @@ spring:
     name: hackathon-backend
   
   datasource:
-    url: jdbc:h2:mem:hackathon_test_db
+    url: jdbc:h2:mem:hackathon_db
     username: sa
     password: 
     driver-class-name: org.h2.Driver
