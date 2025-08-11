@@ -31,27 +31,62 @@ AI 해커톤 참가 신청 및 관리 시스템입니다. 팀 정보, 팀원 정
 bootCamp/
 ├── frontend/                 # React 프론트엔드
 │   ├── src/
-│   │   ├── api/             # API 설정
-│   │   ├── components/       # 공통 컴포넌트
-│   │   ├── model/           # 타입 정의
-│   │   ├── services/        # API 서비스
-│   │   └── ...
-│   ├── package.json
-│   └── ...
+│   │   ├── api/             # API 설정 및 HTTP 클라이언트
+│   │   ├── assets/          # 이미지, 아이콘 등 정적 자원
+│   │   ├── components/      # 공통 컴포넌트
+│   │   ├── hooks/           # 커스텀 React 훅
+│   │   ├── layout/          # 레이아웃 관련 컴포넌트
+│   │   ├── model/           # 타입 정의 및 모델
+│   │   ├── pages/           # 페이지 컴포넌트
+│   │   ├── router/          # 라우팅 설정
+│   │   ├── services/        # API 서비스 및 비즈니스 로직
+│   │   ├── stores/          # Zustand 상태 관리
+│   │   ├── theme/           # 테마 및 스타일 설정
+│   │   ├── types/           # TypeScript 타입 정의
+│   │   ├── utils/           # 유틸리티 함수
+│   │   ├── App.tsx          # 메인 애플리케이션 컴포넌트
+│   │   └── main.tsx         # 애플리케이션 진입점
+│   ├── cypress/             # E2E 테스트 설정
+│   ├── public/              # 정적 파일
+│   ├── package.json         # 의존성 및 스크립트
+│   ├── vite.config.ts       # Vite 설정
+│   ├── tsconfig.json        # TypeScript 설정
+│   ├── eslint.config.js     # ESLint 설정
+│   ├── jest.config.js       # Jest 테스트 설정
+│   ├── cypress.config.js    # Cypress 설정
+│   ├── Dockerfile           # Docker 이미지 빌드
+│   └── nginx.conf           # Nginx 설정
 ├── backend/                  # Spring Boot 백엔드
-│   ├── src/main/java/
-│   │   └── com/kt/hackathon/be/
-│   │       ├── application/
-│   │       │   ├── controller/    # REST API 컨트롤러
-│   │       │   ├── service/       # 비즈니스 로직
-│   │       │   ├── repository/    # 데이터 접근 계층
-│   │       │   ├── model/         # 엔티티 클래스
-│   │       │   └── dto/           # 데이터 전송 객체
-│   │       └── config/            # 설정 클래스
-│   ├── build.gradle
-│   └── ...
-
-├── architecture.md           # 아키텍처 가이드
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   └── com/kt/hackathon/be/
+│   │   │   │       ├── application/
+│   │   │   │       │   ├── controller/    # REST API 컨트롤러
+│   │   │   │       │   ├── service/       # 비즈니스 로직
+│   │   │   │       │   ├── repository/    # 데이터 접근 계층
+│   │   │   │       │   ├── model/         # 엔티티 클래스
+│   │   │   │       │   └── dto/           # 데이터 전송 객체
+│   │   │   │       ├── config/            # 설정 클래스
+│   │   │   │       └── HackathonBackendApplication.java  # 메인 클래스
+│   │   │   └── resources/
+│   │   │       ├── application.yml        # 애플리케이션 설정
+│   │   │       ├── application-prd.yml    # 운영 환경 설정
+│   │   │       ├── application-test.yml   # 테스트 환경 설정
+│   │   │       └── db/migration/          # 데이터베이스 마이그레이션
+│   │   └── test/                          # 테스트 코드
+│   ├── build.gradle         # Gradle 빌드 설정
+│   ├── settings.gradle      # Gradle 프로젝트 설정
+│   ├── gradlew              # Gradle Wrapper (Unix)
+│   ├── gradlew.bat          # Gradle Wrapper (Windows)
+│   ├── Dockerfile           # Docker 이미지 빌드
+│   └── postman/             # API 테스트 컬렉션
+├── docker-compose.yml       # Docker Compose 설정
+├── docker-compose-test.yml  # 테스트용 Docker Compose 설정
+├── .cursor/                 # Cursor IDE 설정
+├── .vscode/                 # VS Code 설정
+├── _backup/                 # 백업 파일
+├── digest.txt               # 프로젝트 요약
 └── README.md                # 프로젝트 문서
 ```
 
