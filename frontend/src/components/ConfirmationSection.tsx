@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, Paper, TextField, Button, Alert, Snackbar, Chip } from '@mui/material';
+import { Box, Typography, Paper, TextField, Button, Alert, Snackbar} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import { HackathonService } from '../services/HackathonService';
