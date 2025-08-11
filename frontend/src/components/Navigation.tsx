@@ -149,12 +149,6 @@ const Navigation: React.FC = () => {
           >
             대회 소개
           </NavButton>
-          <NavButton 
-            active={activeSection === 'participation'}
-            onClick={() => scrollToSection('participation')}
-          >
-            참가 안내
-          </NavButton>
         </NavLinks>
 
         <ParticipateText>

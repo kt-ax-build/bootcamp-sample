@@ -3,7 +3,6 @@ import { CssBaseline } from '@mui/material';
 import { theme } from './theme';
 import Navigation from './components/Navigation';
 import IntroSection from './components/IntroSection';
-import ParticipationSection from './components/ParticipationSection';
 
 function App() {
   return (
@@ -14,9 +13,6 @@ function App() {
         <div style={{ paddingTop: 70 }}>
           <div id="intro">
             <IntroSection />
-          </div>
-          <div id="participation">
-            <ParticipationSection />
           </div>
         </div>
       </div>
