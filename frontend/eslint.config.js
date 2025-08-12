@@ -28,4 +28,23 @@ export default tseslint.config([
       ...jest.configs.recommended.rules,
     },
   },
+  {
+    files: ['cypress/**/*.{ts,tsx,js,jsx}'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        cy: true,
+        Cypress: true,
+        describe: true,
+        context: true,
+        it: true,
+        before: true,
+        beforeEach: true,
+        after: true,
+        afterEach: true,
+        expect: true,
+      },
+    },
+    rules: {},
+  },
 ])

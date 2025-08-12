@@ -8,6 +8,8 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 
+/// <reference types="cypress" />
+
 declare global {
   namespace Cypress {
     interface Chainable {
