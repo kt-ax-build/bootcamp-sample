@@ -4,15 +4,15 @@
 
 - **Story 제목**: 참가 안내 페이지 구현
 - **기능 범위**: Front-End
-- **Estimation**: 8
-- **초과/미만 사유**: 기본 8점 유지 (표준적인 정보 페이지 구현)
-- **실제 Story Point**: 8
+- **Estimation**: 5
+- **초과/미만 사유**: 기본 5점 유지 (표준적인 정보 페이지 구현)
+- **실제 Story Point**: 5
 - **우선순위**: High
 - **의존성**: 없음 (독립적으로 개발 가능)
 
 ## 🎯 Story 문장
 
-"사용자로서, 나는 참가 안내 정보를 쉽게 확인할 수 있는 페이지를 만들고 싶다. 그래야 참가 자격, 팀 구성, 신청 방법, 주요안내사항 등을 명확히 파악할 수 있다."
+"사용자로서, 나는 참가 안내 정보를 쉽게 확인할 수 있는 페이지를 만들고 싶다. 이를 통해 참가 자격, 팀 구성, 신청 방법, 주요안내사항 등을 명확히 파악할 수 있다."
 
 ## ✅ Acceptance Criteria
 
@@ -79,7 +79,7 @@
 ## 🔗 관련 문서
 
 - [피그마 디자인](https://www.figma.com/design/SklE8qQCS7NQ668BIKi3cB/%EB%B6%80%ED%8A%B8%EC%BA%A0%ED%94%84-%EC%8B%9C%EC%95%88--%EA%B3%B5%EC%9C%A0%EC%9A%A9-?node-id=1-282&t=YikVCzM53lZqS2kU-4)
-- [아키텍처 가이드](../.cursor/rules/mdcRules.md)
+- [개발 규칙서](../.cursor/rules/mdcRules.md)
 - [초기소스](../_backup/AI%20해커톤%20웹사이트/)
 - [피그마 전체 디자인 캡쳐](../_backup/1920w_default.png)
 
