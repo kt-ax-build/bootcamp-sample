@@ -77,15 +77,16 @@ const NavButton = styled(Button, {
   },
 }));
 
-const ParticipateText = styled(Typography)(() => ({
+const ParticipateButton = styled(Button)(() => ({
   color: '#ffffff',
   fontSize: '12.3px',
   fontWeight: 400,
-  cursor: 'pointer',
-  transition: 'color 0.2s ease',
+  textTransform: 'none',
   padding: '1.75px 0 1.25px 0',
   lineHeight: '1.2',
+  minWidth: 'auto',
   '&:hover': {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     color: '#ffffff',
   },
 }));
@@ -113,7 +114,7 @@ const Navigation: React.FC = () => {
   // 스크롤 위치에 따라 활성 섹션 감지
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['intro', 'participation', 'registration', 'confirmation'];
+      const sections = ['intro', 'participation', 'application'];
       const scrollPosition = window.scrollY + 100;
 
       for (const sectionId of sections) {
@@ -155,11 +156,17 @@ const Navigation: React.FC = () => {
           >
             참가 안내
           </NavButton>
+          <NavButton 
+            active={activeSection === 'application'}
+            onClick={() => scrollToSection('application')}
+          >
+            신청 및 접수
+          </NavButton>
         </NavLinks>
 
-        <ParticipateText>
+        <ParticipateButton onClick={() => scrollToSection('application')}>
           지금 참여하세요 →
-        </ParticipateText>
+        </ParticipateButton>
       </StyledToolbar>
     </StyledAppBar>
   );

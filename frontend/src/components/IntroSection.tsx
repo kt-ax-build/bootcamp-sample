@@ -230,7 +230,7 @@ const ScheduleDescription = styled(Typography)(() => ({
 
 const IntroSection: React.FC = () => {
   const handleParticipateClick = () => {
-    const element = document.getElementById('registration');
+    const element = document.getElementById('application');
     if (element) {
       const navHeight = 70;
       const elementPosition = element.offsetTop - navHeight;
