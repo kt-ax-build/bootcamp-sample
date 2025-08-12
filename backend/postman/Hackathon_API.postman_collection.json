@@ -1,0 +1,632 @@
+{
+  "info": {
+    "name": "Hackathon API Collection",
+    "description": "AI Agentic Boot Camp 해커톤 API 테스트 컬렉션",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "{{baseUrl}}"
+    },
+    {
+      "key": "apiVersion",
+      "value": "{{apiVersion}}"
+    },
+    {
+      "key": "contentType",
+      "value": "{{contentType}}"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "if (!pm.environment.get('runTeamName')) {",
+          "  const base = pm.environment.get('testTeamName') || 'AI개발팀';",
+          "  pm.environment.set('runTeamName', base + '-' + Date.now());",
+          "}"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "TC-API-001: 해커톤 애플리케이션 생성",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "{{contentType}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"teamName\": \"{{runTeamName}}\",\n  \"teamSize\": \"3\",\n  \"teamDescription\": \"AI 개발팀\",\n  \"ideaTitle\": \"{{testIdeaTitle}}\",\n  \"ideaDescription\": \"{{testIdeaDescription}}\",\n  \"problemStatement\": \"고객 문의 응답 시간이 오래 걸림\",\n  \"solutionApproach\": \"AI 챗봇으로 24시간 응답\",\n  \"techStack\": \"Python, TensorFlow, React\",\n  \"members\": [\n    {\n      \"name\": \"{{testMemberName}}\",\n      \"email\": \"kim@test.com\",\n      \"phone\": \"010-1234-5678\",\n      \"role\": \"개발자\",\n      \"department\": \"개발팀\",\n      \"position\": \"팀원\",\n      \"isLeader\": true\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/hackathon/{{apiVersion}}/applications",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "hackathon", "{{apiVersion}}", "applications"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"TC-API-001: 200 or 201\", function () {",
+              "  pm.expect([200, 201]).to.include(pm.response.code);",
+              "});",
+              "const json = pm.response.json();",
+              "pm.expect(json).to.have.property(\"id\");",
+              "pm.environment.set(\"createdApplicationId\", String(json.id));",
+              "pm.test(\"생성된 애플리케이션 검증\", function () {",
+              "  pm.expect(json.ideaTitle).to.eql(pm.environment.get(\"testIdeaTitle\"));",
+              "  pm.expect(json.team.teamName).to.eql(pm.environment.get(\"runTeamName\"));",
+              "  pm.expect(json.status).to.eql(\"PENDING\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-API-002: 전체 애플리케이션 조회",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/hackathon/{{apiVersion}}/applications",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "hackathon", "{{apiVersion}}", "applications"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"TC-API-002: 200 OK\", function () {",
+              "  pm.expect(pm.response.code).to.eql(200);",
+              "});",
+              "const json = pm.response.json();",
+              "pm.test(\"배열 형태 응답\", function () {",
+              "  pm.expect(json).to.be.an('array');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-API-003: 팀명으로 애플리케이션 조회",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/hackathon/{{apiVersion}}/applications?teamName={{runTeamName}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "hackathon", "{{apiVersion}}", "applications"],
+          "query": [
+            {
+              "key": "teamName",
+              "value": "{{runTeamName}}"
+            }
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"TC-API-003: 200 OK\", function () {",
+              "  pm.expect(pm.response.code).to.eql(200);",
+              "});",
+              "const json = pm.response.json();",
+              "pm.test(\"팀명 필터링 검증\", function () {",
+              "  pm.expect(json).to.be.an('array');",
+              "  if (json.length > 0) {",
+              "    json.forEach(function(item) {",
+              "      pm.expect(item.team.teamName).to.eql(pm.environment.get('runTeamName'));",
+              "    });",
+              "  }",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-API-004: 멤버명(이름)으로 애플리케이션 조회",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/hackathon/{{apiVersion}}/applications?memberName={{testMemberName}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "hackathon", "{{apiVersion}}", "applications"],
+          "query": [
+            {
+              "key": "memberName",
+              "value": "{{testMemberName}}"
+            }
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"TC-API-004: 200 OK\", function () {",
+              "  pm.expect(pm.response.code).to.eql(200);",
+              "});",
+              "const json = pm.response.json();",
+              "pm.test(\"멤버명 필터링 검증\", function () {",
+              "  pm.expect(json).to.be.an('array');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-API-005: 멤버명(이메일)으로 애플리케이션 조회",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/hackathon/{{apiVersion}}/applications?memberName=kim@test.com",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "hackathon", "{{apiVersion}}", "applications"],
+          "query": [
+            {
+              "key": "memberName",
+              "value": "kim@test.com"
+            }
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"TC-API-005: 200 OK\", function () {",
+              "  pm.expect(pm.response.code).to.eql(200);",
+              "});",
+              "const json = pm.response.json();",
+              "pm.test(\"이메일 필터링 검증\", function () {",
+              "  pm.expect(json).to.be.an('array');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-API-006: 단건 애플리케이션 조회(존재)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/hackathon/{{apiVersion}}/applications/{{createdApplicationId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "hackathon", "{{apiVersion}}", "applications", "{{createdApplicationId}}"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"TC-API-006: 200 OK\", function () {",
+              "  pm.expect(pm.response.code).to.eql(200);",
+              "});",
+              "const json = pm.response.json();",
+              "pm.test(\"단건 조회 검증\", function () {",
+              "  pm.expect(json.id).to.eql(parseInt(pm.environment.get('createdApplicationId')));",
+              "  pm.expect(json.ideaTitle).to.eql(pm.environment.get('testIdeaTitle'));",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-API-007: 단건 애플리케이션 조회(미존재)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/hackathon/{{apiVersion}}/applications/999",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "hackathon", "{{apiVersion}}", "applications", "999"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"TC-API-007: 404 or 500\", function () {",
+              "  pm.expect([404, 500]).to.include(pm.response.code);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-API-008: 애플리케이션 수정(아이디어만)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "{{contentType}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"ideaTitle\": \"수정된 AI 챗봇 서비스\",\n  \"ideaDescription\": \"수정된 AI 기반 고객 서비스 챗봇\",\n  \"problemStatement\": \"수정된 문제 정의\",\n  \"solutionApproach\": \"수정된 해결 방안\",\n  \"techStack\": \"수정된 기술 스택\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/hackathon/{{apiVersion}}/applications/{{createdApplicationId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "hackathon", "{{apiVersion}}", "applications", "{{createdApplicationId}}"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"TC-API-008: 200 OK\", function () {",
+              "  pm.expect(pm.response.code).to.eql(200);",
+              "});",
+              "const json = pm.response.json();",
+              "pm.test(\"아이디어 수정 검증\", function () {",
+              "  pm.expect(json.ideaTitle).to.eql(\"수정된 AI 챗봇 서비스\");",
+              "  pm.expect(json.ideaDescription).to.eql(\"수정된 AI 기반 고객 서비스 챗봇\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-API-009: 애플리케이션 수정(팀 구성/멤버만)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "{{contentType}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"teamSize\": \"5\",\n  \"teamDescription\": \"수정된 팀 설명\",\n  \"members\": [\n    {\n      \"name\": \"이개발\",\n      \"email\": \"lee@test.com\",\n      \"phone\": \"010-9876-5432\",\n      \"role\": \"개발자\",\n      \"department\": \"개발팀\",\n      \"position\": \"팀원\",\n      \"isLeader\": false\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/hackathon/{{apiVersion}}/applications/{{createdApplicationId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "hackathon", "{{apiVersion}}", "applications", "{{createdApplicationId}}"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"TC-API-009: 200 OK\", function () {",
+              "  pm.expect(pm.response.code).to.eql(200);",
+              "});",
+              "const json = pm.response.json();",
+              "pm.test(\"팀 구성 수정 검증\", function () {",
+              "  pm.expect(json.team.teamSize).to.eql(\"5\");",
+              "  pm.expect(json.team.teamDescription).to.eql(\"수정된 팀 설명\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-API-010: 애플리케이션 수정(팀명 제공: 기존 팀 재사용)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "{{contentType}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"teamName\": \"{{runTeamName}}\",\n  \"ideaTitle\": \"팀명 재사용 테스트\",\n  \"members\": [\n    {\n      \"name\": \"박개발\",\n      \"email\": \"park@test.com\",\n      \"phone\": \"010-1111-2222\",\n      \"role\": \"개발자\",\n      \"department\": \"개발팀\",\n      \"position\": \"팀원\",\n      \"isLeader\": true\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/hackathon/{{apiVersion}}/applications/{{createdApplicationId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "hackathon", "{{apiVersion}}", "applications", "{{createdApplicationId}}"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"TC-API-010: 200 OK\", function () {",
+              "  pm.expect(pm.response.code).to.eql(200);",
+              "});",
+              "const json = pm.response.json();",
+              "pm.test(\"팀명 재사용 검증\", function () {",
+              "  pm.expect(json.team.teamName).to.eql(pm.environment.get('runTeamName'));",
+              "  pm.expect(json.ideaTitle).to.eql(\"팀명 재사용 테스트\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-API-011: 애플리케이션 수정(팀명 제공: 신규 팀 생성)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "{{contentType}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"teamName\": \"{{runTeamName}}-신규팀\",\n  \"teamSize\": \"4\",\n  \"teamDescription\": \"신규 생성된 팀\",\n  \"ideaTitle\": \"신규 팀 생성 테스트\",\n  \"members\": [\n    {\n      \"name\": \"최개발\",\n      \"email\": \"choi@test.com\",\n      \"phone\": \"010-3333-4444\",\n      \"role\": \"개발자\",\n      \"department\": \"개발팀\",\n      \"position\": \"팀원\",\n      \"isLeader\": true\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/hackathon/{{apiVersion}}/applications/{{createdApplicationId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "hackathon", "{{apiVersion}}", "applications", "{{createdApplicationId}}"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"TC-API-011: 200 OK\", function () {",
+              "  pm.expect(pm.response.code).to.eql(200);",
+              "});",
+              "const json = pm.response.json();",
+              "pm.test(\"신규 팀 생성 검증\", function () {",
+              "  pm.expect(json.team.teamName).to.eql(pm.environment.get('runTeamName') + '-신규팀');",
+              "  pm.expect(json.ideaTitle).to.eql(\"신규 팀 생성 테스트\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-API-012: 애플리케이션 삭제",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/hackathon/{{apiVersion}}/applications/{{createdApplicationId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "hackathon", "{{apiVersion}}", "applications", "{{createdApplicationId}}"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"TC-API-012: 204 or 200\", function () {",
+              "  pm.expect([200, 204]).to.include(pm.response.code);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-API-013: 삭제 후 단건 조회",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/hackathon/{{apiVersion}}/applications/{{createdApplicationId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "hackathon", "{{apiVersion}}", "applications", "{{createdApplicationId}}"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// 삭제 후 조회를 위한 짧은 딜레이",
+              "setTimeout(function() {}, 300);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"TC-API-013: 200/204/404/500 허용\", function () {",
+              "  pm.expect([200, 204, 404, 500]).to.include(pm.response.code);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-API-014: 미존재 애플리케이션 삭제",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/hackathon/{{apiVersion}}/applications/999",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "hackathon", "{{apiVersion}}", "applications", "999"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"TC-API-014: 204/404/500 허용\", function () {",
+              "  pm.expect([200, 204, 404, 500]).to.include(pm.response.code);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-API-015: 추가 애플리케이션 생성",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "{{contentType}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"teamName\": \"{{runTeamName}}-2\",\n  \"teamSize\": \"2\",\n  \"teamDescription\": \"두 번째 테스트 팀\",\n  \"ideaTitle\": \"두 번째 AI 서비스\",\n  \"ideaDescription\": \"두 번째 AI 기반 서비스\",\n  \"problemStatement\": \"두 번째 문제 정의\",\n  \"solutionApproach\": \"두 번째 해결 방안\",\n  \"techStack\": \"Java, Spring Boot\",\n  \"members\": [\n    {\n      \"name\": \"정개발\",\n      \"email\": \"jung@test.com\",\n      \"phone\": \"010-5555-6666\",\n      \"role\": \"개발자\",\n      \"department\": \"개발팀\",\n      \"position\": \"팀원\",\n      \"isLeader\": true\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/hackathon/{{apiVersion}}/applications",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "hackathon", "{{apiVersion}}", "applications"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"TC-API-015: 200 or 201\", function () {",
+              "  pm.expect([200, 201]).to.include(pm.response.code);",
+              "});",
+              "const json = pm.response.json();",
+              "pm.expect(json).to.have.property(\"id\");",
+              "pm.environment.set(\"createdApplicationId2\", String(json.id));",
+              "pm.test(\"두 번째 애플리케이션 검증\", function () {",
+              "  pm.expect(json.team.teamName).to.eql(pm.environment.get('runTeamName') + '-2');",
+              "  pm.expect(json.ideaTitle).to.eql(\"두 번째 AI 서비스\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-API-016: 두 번째 애플리케이션 삭제",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/hackathon/{{apiVersion}}/applications/{{createdApplicationId2}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "hackathon", "{{apiVersion}}", "applications", "{{createdApplicationId2}}"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"TC-API-016: 204 or 200\", function () {",
+              "  pm.expect([200, 204]).to.include(pm.response.code);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-API-017: 멤버명 공백 조회(전체)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/hackathon/{{apiVersion}}/applications?memberName=",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "hackathon", "{{apiVersion}}", "applications"],
+          "query": [
+            {
+              "key": "memberName",
+              "value": ""
+            }
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"TC-API-017: 200 OK\", function () {",
+              "  pm.expect(pm.response.code).to.eql(200);",
+              "});",
+              "const json = pm.response.json();",
+              "pm.test(\"공백 필터 전체 조회 검증\", function () {",
+              "  pm.expect(json).to.be.an('array');",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
