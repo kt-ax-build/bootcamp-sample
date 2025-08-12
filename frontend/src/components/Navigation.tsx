@@ -86,7 +86,7 @@ const ParticipateText = styled(Typography)(() => ({
   padding: '1.75px 0 1.25px 0',
   lineHeight: '1.2',
   '&:hover': {
-    color: '#ffffff',
+    color: '#9810fa',
   },
 }));
 
@@ -128,8 +128,20 @@ const Navigation: React.FC = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // 스크롤 이벤트에 throttle 적용
+    let ticking = false;
+    const throttledHandleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', throttledHandleScroll);
+    return () => window.removeEventListener('scroll', throttledHandleScroll);
   }, []);
 
   return (
@@ -149,9 +161,15 @@ const Navigation: React.FC = () => {
           >
             대회 소개
           </NavButton>
+          <NavButton 
+            active={activeSection === 'participation'}
+            onClick={() => scrollToSection('participation')}
+          >
+            참가 안내
+          </NavButton>
         </NavLinks>
 
-        <ParticipateText>
+        <ParticipateText onClick={() => scrollToSection('participation')}>
           지금 참여하세요 →
         </ParticipateText>
       </StyledToolbar>
