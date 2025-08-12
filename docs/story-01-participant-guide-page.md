@@ -79,7 +79,7 @@
 ## 🔗 관련 문서
 
 - [피그마 디자인](https://www.figma.com/design/SklE8qQCS7NQ668BIKi3cB/%EB%B6%80%ED%8A%B8%EC%BA%A0%ED%94%84-%EC%8B%9C%EC%95%88--%EA%B3%B5%EC%9C%A0%EC%9A%A9-?node-id=1-282&t=YikVCzM53lZqS2kU-4)
-- [아키텍처 가이드](../.cursor/rules/mdcRules.md)
+- [개발 규칙서](../.cursor/rules/mdcRules.md)
 - [초기소스](../_backup/AI%20해커톤%20웹사이트/)
 - [피그마 전체 디자인 캡쳐](../_backup/1920w_default.png)
 
