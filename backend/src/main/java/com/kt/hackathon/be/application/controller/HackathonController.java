@@ -34,6 +34,31 @@ public class HackathonController {
     }
   }
 
+  @GetMapping("/applications/search")
+  @Operation(summary = "신청 정보 검색", description = "팀명 또는 이메일로 신청 정보를 검색합니다.")
+  public ResponseEntity<?> searchApplication(
+      @RequestParam(required = false) String teamName,
+      @RequestParam(required = false) String email) {
+    try {
+      if ((teamName == null || teamName.trim().isEmpty())
+          && (email == null || email.trim().isEmpty())) {
+        return ResponseEntity.badRequest().body(Map.of("error", "팀명 또는 이메일 중 하나는 입력해야 합니다."));
+      }
+
+      List<HackathonApplication> applications =
+          hackathonService.searchApplications(teamName, email);
+
+      if (applications.isEmpty()) {
+        return ResponseEntity.ok(Map.of("message", "검색 결과가 없습니다.", "data", applications));
+      }
+
+      return ResponseEntity.ok(Map.of("data", applications));
+    } catch (Exception e) {
+      return ResponseEntity.status(500)
+          .body(Map.of("error", "검색 중 오류가 발생했습니다.", "details", e.getMessage()));
+    }
+  }
+
   @GetMapping("/applications")
   @Operation(summary = "해커톤 애플리케이션 조회", description = "해커톤 애플리케이션 목록을 조회합니다.")
   public ResponseEntity<List<HackathonApplication>> getApplications(

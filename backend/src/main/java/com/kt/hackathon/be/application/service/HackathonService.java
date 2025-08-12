@@ -137,6 +137,53 @@ public class HackathonService {
   }
 
   @Transactional(readOnly = true)
+  public List<HackathonApplication> searchApplications(String teamName, String email) {
+    try {
+      List<HackathonApplication> applications = new ArrayList<>();
+
+      if (teamName != null && !teamName.trim().isEmpty()) {
+        // 팀명으로 검색
+        List<HackathonApplication> teamResults =
+            applicationRepository.findByTeamTeamName(teamName.trim());
+        applications.addAll(teamResults);
+      }
+
+      if (email != null && !email.trim().isEmpty()) {
+        // 이메일로 검색
+        List<HackathonApplication> emailResults =
+            applicationRepository.findByTeamMembersEmail(email.trim());
+        applications.addAll(emailResults);
+      }
+
+      // 중복 제거 (팀명과 이메일 모두로 검색했을 경우)
+      if (teamName != null
+          && !teamName.trim().isEmpty()
+          && email != null
+          && !email.trim().isEmpty()) {
+        applications = applications.stream().distinct().collect(Collectors.toList());
+      }
+
+      // 팀 정보를 명시적으로 로드
+      for (HackathonApplication application : applications) {
+        if (application.getTeam() != null) {
+          // 팀 정보 로드
+          application.getTeam().getTeamName();
+          // 팀원 정보 로드
+          if (application.getTeam().getMembers() != null) {
+            application.getTeam().getMembers().size();
+          }
+        }
+      }
+
+      return applications;
+    } catch (Exception e) {
+      System.err.println("Error in searchApplications: " + e.getMessage());
+      e.printStackTrace();
+      return List.of();
+    }
+  }
+
+  @Transactional(readOnly = true)
   public HackathonApplication getApplication(Long id) {
     return applicationRepository
         .findById(id)
