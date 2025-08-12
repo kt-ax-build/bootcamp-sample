@@ -67,6 +67,17 @@
 - **When** 신청이 성공적으로 처리되면
 - **Then** 신청 완료 알림이 표시된다
 
+### 8. 네비게이션 기능
+- **Given** 메인페이지에 접속해서
+- **When** 네비게이션 바에서 "신청 및 접수", "지금 참여하세요" 메뉴를 선택하면
+- **Then** 해당 섹션으로 부드럽게 스크롤되어 이동한다
+
+### 9. 참가 신청하기
+- **Given** 메인페이지에 접속해서
+- **When** 대회 소개 섹션에서 "참가 신청하기" 버튼을 선택하면
+- **Then** 해당 섹션으로 부드럽게 스크롤되어 이동한다
+
+
 ## 🎨 UI/UX 요구사항
 
 ### 폼 디자인
@@ -142,7 +153,7 @@ DELETE /api/hackathon/v1/applications/{id}
 ## 🔗 관련 문서
 
 - [피그마 디자인](https://www.figma.com/design/SklE8qQCS7NQ668BIKi3cB/%EB%B6%80%ED%8A%B8%EC%BA%A0%ED%94%84-%EC%8B%9C%EC%95%88--%EA%B3%B5%EC%9C%A0%EC%9A%A9-?node-id=37-185&m=dev)
-- [아키텍처 가이드](../.cursor/rules/mdcRules.md)
+- [개발 규칙서](../.cursor/rules/mdcRules.md)
 - [초기소스](../_backup/AI%20해커톤%20웹사이트/)
 - [피그마 전체 디자인 캡쳐](../_backup/1920w_default.png)
 - [데이터베이스 스키마](../.cursor/rules/DATABASE_SCHEMA.md)
