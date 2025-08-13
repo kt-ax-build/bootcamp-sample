@@ -101,7 +101,14 @@ public class HackathonService {
   public List<HackathonApplication> getApplications(String teamName, String memberName) {
     try {
       List<HackathonApplication> applications;
-      if (teamName != null && !teamName.trim().isEmpty()) {
+
+      // 검색 조건 검증
+      if ((teamName == null || teamName.trim().isEmpty())
+          && (memberName == null || memberName.trim().isEmpty())) {
+        // 검색 조건이 없는 경우 전체 조회
+        applications = applicationRepository.findAll();
+      } else if (teamName != null && !teamName.trim().isEmpty()) {
+        // 팀명으로 검색
         applications = applicationRepository.findByTeamTeamName(teamName.trim());
       } else if (memberName != null && !memberName.trim().isEmpty()) {
         // 이메일 형식인지 확인
@@ -111,7 +118,8 @@ public class HackathonService {
           applications = applicationRepository.findByTeamMembersName(memberName.trim());
         }
       } else {
-        applications = applicationRepository.findAll();
+        // 검색 조건이 잘못된 경우
+        throw new IllegalArgumentException("검색 조건이 올바르지 않습니다.");
       }
 
       // 팀 정보를 명시적으로 로드
@@ -127,6 +135,9 @@ public class HackathonService {
       }
 
       return applications;
+    } catch (IllegalArgumentException e) {
+      // 검색 조건 오류는 그대로 전파
+      throw e;
     } catch (Exception e) {
       // 로그 출력
       System.err.println("Error in getApplications: " + e.getMessage());
