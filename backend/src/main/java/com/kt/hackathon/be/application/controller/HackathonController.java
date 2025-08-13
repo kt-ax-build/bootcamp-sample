@@ -36,17 +36,22 @@ public class HackathonController {
 
   @GetMapping("/applications")
   @Operation(summary = "해커톤 애플리케이션 조회", description = "해커톤 애플리케이션 목록을 조회합니다.")
-  public ResponseEntity<List<HackathonApplication>> getApplications(
+  public ResponseEntity<?> getApplications(
       @RequestParam(required = false) String teamName,
       @RequestParam(required = false) String memberName) {
     try {
       List<HackathonApplication> applications =
           hackathonService.getApplications(teamName, memberName);
       return ResponseEntity.ok(applications);
+    } catch (IllegalArgumentException e) {
+      // 잘못된 검색 조건인 경우 400 에러
+      return ResponseEntity.badRequest()
+          .body(Map.of("error", "검색 조건이 올바르지 않습니다.", "details", e.getMessage()));
     } catch (Exception e) {
       System.err.println("Error in getApplications: " + e.getMessage());
       e.printStackTrace();
-      return ResponseEntity.status(500).build();
+      return ResponseEntity.status(500)
+          .body(Map.of("error", "조회 중 오류가 발생했습니다.", "details", e.getMessage()));
     }
   }
 
